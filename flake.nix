@@ -8,6 +8,10 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    illogical-flake = {
+      url = "github:soymou/illogical-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     omp.url = "github:can1357/oh-my-pi";
   };
 
@@ -42,7 +46,10 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.${username} = import ./users/${username}/home.nix;
+              home-manager.users.${username}.imports = [
+                inputs.illogical-flake.homeManagerModules.default
+                ./users/${username}/home.nix
+              ];
             }
           ];
         };

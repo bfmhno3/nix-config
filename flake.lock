@@ -2,7 +2,7 @@
   "nodes": {
     "bun2nix": {
       "inputs": {
-        "flake-parts": "flake-parts",
+        "flake-parts": "flake-parts_2",
         "nixpkgs": [
           "omp",
           "nixpkgs"
@@ -26,7 +26,7 @@
     },
     "bun2nix-darwin-x64": {
       "inputs": {
-        "flake-parts": "flake-parts_2",
+        "flake-parts": "flake-parts_3",
         "nixpkgs": [
           "omp",
           "nixpkgs-darwin-x64"
@@ -48,7 +48,47 @@
         "type": "github"
       }
     },
+    "dotfiles": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778966846,
+        "narHash": "sha256-N7HUWD3dliyPDXA5qXhuma5segnnopgPo2nv5iFaeXc=",
+        "ref": "refs/heads/main",
+        "rev": "c0706258b1ff22c70f6c0e51c4b812e63703f620",
+        "revCount": 6244,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/end-4/dots-hyprland"
+      },
+      "original": {
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/end-4/dots-hyprland"
+      }
+    },
     "flake-parts": {
+      "inputs": {
+        "nixpkgs-lib": [
+          "illogical-flake",
+          "nur",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1733312601,
+        "narHash": "sha256-4pDvzqnegAfRkPwO3wmwBhVi/Sye1mzps0zHWYnP88c=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "205b12d8b7cd4802fbcb8e8ef6a0f1408781a4f9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
+    "flake-parts_2": {
       "inputs": {
         "nixpkgs-lib": [
           "omp",
@@ -70,7 +110,7 @@
         "type": "github"
       }
     },
-    "flake-parts_2": {
+    "flake-parts_3": {
       "inputs": {
         "nixpkgs-lib": [
           "omp",
@@ -130,6 +170,29 @@
         "owner": "nix-community",
         "ref": "release-26.05",
         "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "illogical-flake": {
+      "inputs": {
+        "dotfiles": "dotfiles",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "nur": "nur",
+        "quickshell": "quickshell"
+      },
+      "locked": {
+        "lastModified": 1779068758,
+        "narHash": "sha256-7osZ24TmUVDWZDxQ8Bi/P6GYiqTWw5azNWaVd+GfohY=",
+        "owner": "soymou",
+        "repo": "illogical-flake",
+        "rev": "8629ef302b956cf6ab0089338a867dbe844156fd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "soymou",
+        "repo": "illogical-flake",
         "type": "github"
       }
     },
@@ -218,6 +281,28 @@
         "type": "github"
       }
     },
+    "nur": {
+      "inputs": {
+        "flake-parts": "flake-parts",
+        "nixpkgs": [
+          "illogical-flake",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1779066378,
+        "narHash": "sha256-GqKhLVZTmZa68mLlCat57m54aeYPhrNAPVTLd2pGKYk=",
+        "owner": "nix-community",
+        "repo": "NUR",
+        "rev": "ab477ab3a75a85a68a80d9d26a572f9de9742808",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "NUR",
+        "type": "github"
+      }
+    },
     "omp": {
       "inputs": {
         "bun2nix": "bun2nix",
@@ -241,10 +326,32 @@
         "type": "github"
       }
     },
+    "quickshell": {
+      "inputs": {
+        "nixpkgs": [
+          "illogical-flake",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1778488696,
+        "narHash": "sha256-QSWgYuZUCNUJ/cxmaq83WkcT7lHQDDfsPVgH+96kIl0=",
+        "ref": "refs/heads/master",
+        "rev": "7d1c9a9c6721606b129829134d6f614f015621e2",
+        "revCount": 818,
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      }
+    },
     "root": {
       "inputs": {
         "helix": "helix",
         "home-manager": "home-manager",
+        "illogical-flake": "illogical-flake",
         "nixpkgs": "nixpkgs_2",
         "omp": "omp"
       }
