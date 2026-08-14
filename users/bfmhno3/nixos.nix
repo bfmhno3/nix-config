@@ -18,6 +18,8 @@
       gcc
       clang-tools
       openocd
+      localsend
+      gimp
     ];
   };
 
