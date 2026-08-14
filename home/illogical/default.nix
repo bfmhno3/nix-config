@@ -13,6 +13,8 @@
     };
   };
 
+  home.packages = [ pkgs.upscayl ];
+
   gtk.enable = false;
 
   home.activation.configureIllogicalImpulse =
