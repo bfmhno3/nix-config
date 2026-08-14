@@ -19,6 +19,7 @@
       clang-tools
       openocd
       localsend
+      easytier
       gimp
     ];
   };
