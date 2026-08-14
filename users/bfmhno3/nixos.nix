@@ -21,6 +21,7 @@
       localsend
       easytier
       gimp
+      texlive.combined.scheme-full
     ];
   };
 
