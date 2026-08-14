@@ -14,6 +14,7 @@
   };
 
   home.packages = [ pkgs.upscayl ];
+  home.sessionVariables.QT_IM_MODULE = "fcitx";
 
   gtk.enable = false;
 
