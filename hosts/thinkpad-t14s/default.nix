@@ -24,6 +24,30 @@
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
+  services.fprintd.enable = true;
+
+  security.pam.services = {
+    polkit-1 = {
+      fprintAuth = false;
+      howdy.enable = false;
+    };
+    sddm = {
+      fprintAuth = true;
+      howdy.enable = true;
+    };
+  };
+
+  services.howdy = {
+    enable = true;
+    control = "sufficient";
+    settings.video.device_path = "/dev/video2";
+  };
+
+  services.linux-enable-ir-emitter = {
+    enable = true;
+    device = "video2";
+  };
+
   programs.hyprland = {
     enable = true;
     withUWSM = true;
