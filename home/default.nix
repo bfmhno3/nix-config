@@ -4,6 +4,7 @@
     inputs.illogical-flake.homeManagerModules.default
     ./core
     ./apps/media.nix
+    ./apps/communication.nix
     ./apps/viewer.nix
     ./apps/productivity.nix
     ./desktop/hyprland

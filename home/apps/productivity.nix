@@ -17,7 +17,6 @@ in
       easytier
       texlive.combined.scheme-full
       google-drive-ocamlfuse
-      telegram-desktop
       zotero
       obsidian
       typora

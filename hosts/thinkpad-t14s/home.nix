@@ -47,6 +47,7 @@
 
     apps = {
       media.enable = true;
+      communication.enable = true;
       viewer.enable = true;
       productivity.enable = true;
     };
