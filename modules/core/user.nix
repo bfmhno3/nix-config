@@ -1,21 +1,30 @@
 {
+  config,
+  lib,
   pkgs,
-  username,
   ...
 }:
+let
+  cfg = config.mySystem.core.user;
+  username = config.mySystem.core.base.username;
+in
 {
-  users.groups.plugdev = { };
-  users.users.${username} = {
-    isNormalUser = true;
-    description = username;
-    shell = pkgs.zsh;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "dialout"
-      "plugdev"
-    ];
-  };
+  options.mySystem.core.user.enable = lib.mkEnableOption "primary system user";
 
-  programs.zsh.enable = true;
+  config = lib.mkIf cfg.enable {
+    users.groups.plugdev = { };
+    users.users.${username} = {
+      isNormalUser = true;
+      description = username;
+      shell = pkgs.zsh;
+      extraGroups = [
+        "wheel"
+        "networkmanager"
+        "dialout"
+        "plugdev"
+      ];
+    };
+
+    programs.zsh.enable = true;
+  };
 }

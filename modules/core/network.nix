@@ -1,18 +1,26 @@
-{ hostName, ... }:
+{ config, lib, ... }:
+let
+  cfg = config.mySystem.core.network;
+  hostName = config.mySystem.core.base.hostName;
+in
 {
-  networking = {
-    inherit hostName;
-    networkmanager.enable = true;
-    firewall.enable = false;
-  };
+  options.mySystem.core.network.enable = lib.mkEnableOption "core networking";
 
-  services.openssh = {
-    enable = true;
-    settings = {
-      X11Forwarding = true;
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
+  config = lib.mkIf cfg.enable {
+    networking = {
+      inherit hostName;
+      networkmanager.enable = true;
+      firewall.enable = false;
     };
-    openFirewall = true;
+
+    services.openssh = {
+      enable = true;
+      settings = {
+        X11Forwarding = true;
+        PermitRootLogin = "no";
+        PasswordAuthentication = false;
+      };
+      openFirewall = true;
+    };
   };
 }

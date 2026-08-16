@@ -1,8 +1,7 @@
-{
-  username,
-  stateVersion,
-  ...
-}:
+{ config, lib, ... }:
+let
+  cfg = config.myHome.core.user;
+in
 {
   imports = [
     ./packages.nix
@@ -14,8 +13,21 @@
     ./editors/helix.nix
   ];
 
-  home = {
-    inherit username stateVersion;
-    homeDirectory = "/home/${username}";
+  options.myHome.core.user = {
+    enable = lib.mkEnableOption "Home Manager user configuration";
+    username = lib.mkOption {
+      type = lib.types.str;
+    };
+    stateVersion = lib.mkOption {
+      type = lib.types.str;
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    home = {
+      username = cfg.username;
+      homeDirectory = "/home/${cfg.username}";
+      stateVersion = cfg.stateVersion;
+    };
   };
 }

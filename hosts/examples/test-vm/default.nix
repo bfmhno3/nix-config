@@ -1,5 +1,21 @@
-{ username, ... }:
 {
+  hostName,
+  stateVersion,
+  username,
+  ...
+}:
+{
+  mySystem.core = {
+    base = {
+      enable = true;
+      inherit hostName username stateVersion;
+    };
+    nix.enable = true;
+    user.enable = true;
+    locale.enable = true;
+    network.enable = true;
+  };
+
   boot.loader.grub.enable = false;
   fileSystems."/" = {
     device = "none";

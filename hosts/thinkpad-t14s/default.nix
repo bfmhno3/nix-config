@@ -1,18 +1,40 @@
-{ ... }:
 {
-  imports = [
-    ./hardware-configuration.nix
-    ../../modules/desktop/common.nix
-    ../../modules/desktop/hyprland.nix
-    ../../modules/desktop/plasma.nix
-    ../../modules/desktop/gaming.nix
-    ../../modules/hardware/bluetooth.nix
-    ../../modules/hardware/battery.nix
-    ../../modules/network
-    ../../modules/dev/general.nix
-    ../../modules/dev/embedded.nix
-    ../../modules/dev/android.nix
-  ];
+  hostName,
+  stateVersion,
+  username,
+  ...
+}:
+{
+  imports = [ ./hardware-configuration.nix ];
+
+  mySystem = {
+    core = {
+      base = {
+        enable = true;
+        inherit hostName username stateVersion;
+      };
+      nix.enable = true;
+      user.enable = true;
+      locale.enable = true;
+      network.enable = true;
+    };
+    desktop = {
+      common.enable = true;
+      hyprland.enable = true;
+      plasma.enable = true;
+      gaming.enable = true;
+    };
+    hardware = {
+      bluetooth.enable = true;
+      battery.enable = true;
+    };
+    network.enable = true;
+    dev = {
+      general.enable = true;
+      embedded.enable = true;
+      android.enable = true;
+    };
+  };
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

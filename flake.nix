@@ -33,6 +33,7 @@
         {
           system,
           hostName,
+          hostPath,
           username,
           stateVersion,
           gitName,
@@ -51,24 +52,24 @@
           };
           modules = [
             { nixpkgs.overlays = [ defaultOverlay ]; }
-            ./modules/core
-            (./hosts + "/${hostName}")
+            ./modules
+            hostPath
             home-manager.nixosModules.home-manager
             {
               home-manager = {
                 useGlobalPkgs = true;
+                sharedModules = [ ./home ];
                 useUserPackages = true;
                 extraSpecialArgs = {
                   inherit
                     inputs
-                    hostName
                     username
                     stateVersion
                     gitName
                     gitEmail
                     ;
                 };
-                users.${username} = import (./hosts + "/${hostName}/home.nix");
+                users.${username} = import (hostPath + "/home.nix");
               };
             }
           ]
@@ -88,8 +89,20 @@
       packages.${defaultSystem} = import ./pkgs { inherit pkgs; };
 
       nixosConfigurations = {
-        thinkpad-t14s = mkHost (commonHostArgs // { hostName = "thinkpad-t14s"; });
-        test-vm = mkHost (commonHostArgs // { hostName = "test-vm"; });
+        thinkpad-t14s = mkHost (
+          commonHostArgs
+          // {
+            hostName = "thinkpad-t14s";
+            hostPath = ./hosts/thinkpad-t14s;
+          }
+        );
+        test-vm = mkHost (
+          commonHostArgs
+          // {
+            hostName = "test-vm";
+            hostPath = ./hosts/examples/test-vm;
+          }
+        );
       };
 
       checks.${defaultSystem}.test-vm = self.nixosConfigurations.test-vm.config.system.build.toplevel;
