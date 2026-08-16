@@ -20,6 +20,7 @@
     };
     desktop = {
       common.enable = true;
+      fonts.enable = true;
       hyprland.enable = true;
       plasma.enable = true;
       gaming.enable = true;

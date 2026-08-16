@@ -16,6 +16,8 @@
     network.enable = true;
   };
 
+  mySystem.desktop.fonts.enable = true;
+
   boot.loader.grub.enable = false;
   fileSystems."/" = {
     device = "none";

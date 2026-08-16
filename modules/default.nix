@@ -2,6 +2,7 @@
   imports = [
     ./core
     ./desktop/common.nix
+    ./desktop/fonts.nix
     ./desktop/hyprland.nix
     ./desktop/plasma.nix
     ./desktop/gaming.nix
