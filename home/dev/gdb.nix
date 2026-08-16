@@ -12,6 +12,7 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = [ pkgs.gdb ];
     home.file.".gdbinit".text = ''
+      source ${pkgs.gdb-dashboard}/share/gdb-dashboard/gdbinit
       set pagination off
       set print pretty on
       set confirm off

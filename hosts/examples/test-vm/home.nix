@@ -6,6 +6,8 @@
   ...
 }:
 {
+  myHome.dev.gdb.enable = true;
+
   myHome.core = {
     user = {
       enable = true;
