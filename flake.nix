@@ -4,6 +4,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     helix.url = "github:helix-editor/helix/master";
+    oh-my-tmux = {
+      url = "github:gpakosz/.tmux";
+      flake = false;
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
