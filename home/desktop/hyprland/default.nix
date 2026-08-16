@@ -50,6 +50,71 @@ in
           ${cfg.monitorConfig}
           LUAEOF
 
+          require_once() {
+            count="$(${pkgs.gnugrep}/bin/grep -Foc -- "$2" "$1" || true)"
+            if [ "$count" -ne 1 ]; then
+              echo "Expected exactly one '$2' in $1, found $count" >&2
+              exit 1
+            fi
+          }
+
+          foot="$HOME/.config/foot/foot.ini"
+          require_once "$foot" 'font=JetBrainsMono Nerd Font:size=11'
+          ${pkgs.gnused}/bin/sed -i \
+            's/^font=JetBrainsMono Nerd Font:size=11$/font=Maple Mono NF CN:size=11/' \
+            "$foot"
+          require_once "$foot" 'font=Maple Mono NF CN:size=11'
+
+          kitty="$HOME/.config/kitty/kitty.conf"
+          require_once "$kitty" 'font_family      JetBrains Mono Nerd Font'
+          if ${pkgs.gnugrep}/bin/grep -Fq 'disable_ligatures' "$kitty"; then
+            echo "Unexpected disable_ligatures setting in $kitty" >&2
+            exit 1
+          fi
+          ${pkgs.gnused}/bin/sed -i \
+            's/^font_family      JetBrains Mono Nerd Font$/font_family family="Maple Mono NF CN" features="+calt"\ndisable_ligatures never/' \
+            "$kitty"
+          require_once "$kitty" 'font_family family="Maple Mono NF CN" features="+calt"'
+          require_once "$kitty" 'disable_ligatures never'
+
+          kdeglobals="$HOME/.config/kdeglobals"
+          require_once "$kdeglobals" 'fixed=JetBrainsMono Nerd Font,11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+          ${pkgs.gnused}/bin/sed -i \
+            's/^fixed=JetBrainsMono Nerd Font,11,/fixed=Maple Mono NF CN,11,/' \
+            "$kdeglobals"
+          require_once "$kdeglobals" 'fixed=Maple Mono NF CN,11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+
+          reload_popup="$HOME/.config/quickshell/ii/ReloadPopup.qml"
+          require_once "$reload_popup" 'font.family: "JetBrains Mono NF"'
+          ${pkgs.gnused}/bin/sed -i \
+            's/font\.family: "JetBrains Mono NF"/font.family: "Maple Mono NF CN"/' \
+            "$reload_popup"
+          require_once "$reload_popup" 'font.family: "Maple Mono NF CN"'
+
+          ${pkgs.coreutils}/bin/mkdir -p "$HOME/.config/illogical-impulse"
+          font_config="$HOME/.config/illogical-impulse/config.json"
+          font_config_tmp="$(${pkgs.coreutils}/bin/mktemp "$font_config.tmp.XXXXXX")"
+          trap '${pkgs.coreutils}/bin/rm -f "$font_config_tmp"' EXIT
+          if [ -e "$font_config" ]; then
+            ${pkgs.jq}/bin/jq -e . "$font_config" > /dev/null
+            ${pkgs.jq}/bin/jq \
+              '.appearance.fonts.monospace = "Maple Mono NF CN" | .appearance.fonts.iconNerd = "Maple Mono NF CN"' \
+              "$font_config" > "$font_config_tmp"
+            ${pkgs.coreutils}/bin/chmod --reference="$font_config" "$font_config_tmp"
+          else
+            ${pkgs.jq}/bin/jq -n \
+              '.appearance.fonts.monospace = "Maple Mono NF CN" | .appearance.fonts.iconNerd = "Maple Mono NF CN"' \
+              > "$font_config_tmp"
+          fi
+          ${pkgs.jq}/bin/jq -e \
+            '.appearance.fonts.monospace == "Maple Mono NF CN" and .appearance.fonts.iconNerd == "Maple Mono NF CN"' \
+            "$font_config_tmp" > /dev/null
+          ${pkgs.coreutils}/bin/mv "$font_config_tmp" "$font_config"
+          trap - EXIT
+          ${pkgs.jq}/bin/jq -e \
+            '.appearance.fonts.monospace == "Maple Mono NF CN" and .appearance.fonts.iconNerd == "Maple Mono NF CN"' \
+            "$font_config" > /dev/null
+
           theme="$HOME/.local/state/quickshell/user/generated/terminal/kitty-theme.conf"
           if [ -f "$theme" ] && ${pkgs.gnugrep}/bin/grep -q '#\$' "$theme"; then
             cat > "$theme" <<'KITTYEOF'
