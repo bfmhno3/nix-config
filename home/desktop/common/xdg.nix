@@ -21,5 +21,8 @@ in
         };
       };
     };
+    xdg.configFile."user-dirs.dirs".force = true;
+    xdg.configFile."mimeapps.list".force = true;
+    xdg.dataFile."applications/mimeapps.list".force = true;
   };
 }

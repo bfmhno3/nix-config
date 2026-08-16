@@ -14,5 +14,6 @@ in
         line_break.disabled = true;
       };
     };
+    home.file."${config.home.homeDirectory}/.config/starship.toml".force = true;
   };
 }
