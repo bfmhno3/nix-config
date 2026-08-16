@@ -18,10 +18,17 @@ in
       unzip
       p7zip
       ripgrep
+      dust
+      nh
+      nvd
       fd
       jq
       yq-go
       eza
+      delta
+      yazi
+      xh
+      trippy
       fzf
       dnsutils
       ldns
@@ -54,5 +61,22 @@ in
       wget
       curl
     ];
+    home.sessionVariables.NH_FLAKE = "${config.home.homeDirectory}/Projects/nix-config";
+
+    programs.direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+    };
+
+    programs.zoxide = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
+    programs.nix-index = {
+      enable = true;
+      enableZshIntegration = true;
+    };
   };
 }

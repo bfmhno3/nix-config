@@ -41,13 +41,13 @@ nix fmt <changed-hand-written-nix-files>
 nix flake check
 nix build .#nixosConfigurations.test-vm.config.system.build.vm
 ./result/bin/run-test-vm-vm
-nix build .#nixosConfigurations.thinkpad-t14s.config.system.build.toplevel
+nh os build .#thinkpad-t14s
 ```
 
 Activate the physical host only from that machine:
 
 ```sh
-sudo nixos-rebuild switch --flake .#thinkpad-t14s
+nh os switch .#thinkpad-t14s
 ```
 
 ## Project templates
