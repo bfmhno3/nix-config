@@ -1,5 +1,6 @@
 {
   config,
+  hostName,
   pkgs,
   ...
 }:
@@ -9,14 +10,9 @@
     dotfiles = {
       fish.enable = true;
       kitty.enable = true;
-      starship.enable = true;
+      starship.enable = false;
     };
   };
-
-  home.packages = [ pkgs.upscayl ];
-  home.sessionVariables.QT_IM_MODULE = "fcitx";
-
-  gtk.enable = false;
 
   home.activation.configureIllogicalImpulse =
     config.lib.dag.entryAfter [ "copyIllogicalImpulseConfigs" ]
@@ -32,14 +28,9 @@
           "$applycolor"
 
         general="$HOME/.config/hypr/custom/general.lua"
+        # The host monitor topology must follow the upstream configuration copy that replaces this file.
         cat >> "$general" <<'LUAEOF'
-
-        hl.monitor({
-            output = "eDP-1",
-            mode = "preferred",
-            position = "auto",
-            scale = 2
-        })
+        ${builtins.readFile ../../../hosts/${hostName}/monitors.lua}
         LUAEOF
 
         theme="$HOME/.local/state/quickshell/user/generated/terminal/kitty-theme.conf"

@@ -23,38 +23,87 @@
       ...
     }:
     let
-      system = "x86_64-linux";
-      username = "bfmhno3";
-      pkgs = nixpkgs.legacyPackages.${system};
-    in
-    {
-      formatter.${system} = pkgs.nixfmt-tree;
-
-      nixosConfigurations = {
-        test-vm = nixpkgs.lib.nixosSystem {
+      defaultSystem = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${defaultSystem};
+      mkHost =
+        {
+          system,
+          hostName,
+          username,
+          stateVersion,
+          gitName,
+          gitEmail,
+          extraModules ? [ ],
+        }:
+        nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit username; };
-          modules = [ ./hosts/test-vm ];
-        };
-
-        thinkpad-t14s = nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { inherit inputs username; };
+          specialArgs = {
+            inherit
+              inputs
+              hostName
+              username
+              stateVersion
+              ;
+          };
           modules = [
-            ./hosts/thinkpad-t14s
+            ./modules/core
+            (./hosts + "/${hostName}")
             home-manager.nixosModules.home-manager
             {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${username}.imports = [
-                inputs.illogical-flake.homeManagerModules.default
-                ./users/${username}/home.nix
-              ];
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                extraSpecialArgs = {
+                  inherit
+                    inputs
+                    hostName
+                    username
+                    stateVersion
+                    gitName
+                    gitEmail
+                    ;
+                };
+                users.${username} = import (./hosts + "/${hostName}/home.nix");
+              };
             }
-          ];
+          ]
+          ++ extraModules;
         };
+      commonHostArgs = {
+        system = defaultSystem;
+        username = "bfmhno3";
+        stateVersion = "26.05";
+        gitName = "bfmhno3";
+        gitEmail = "858446559@qq.com";
+      };
+    in
+    {
+      formatter.${defaultSystem} = pkgs.nixfmt-tree;
+
+      nixosConfigurations = {
+        thinkpad-t14s = mkHost (commonHostArgs // { hostName = "thinkpad-t14s"; });
+        test-vm = mkHost (commonHostArgs // { hostName = "test-vm"; });
       };
 
-      checks.${system}.test-vm = self.nixosConfigurations.test-vm.config.system.build.toplevel;
+      checks.${defaultSystem}.test-vm = self.nixosConfigurations.test-vm.config.system.build.toplevel;
+
+      templates = {
+        stm32 = {
+          path = ./templates/stm32;
+          description = "STM32 development shell";
+        };
+        rust = {
+          path = ./templates/rust;
+          description = "Rust development shell";
+        };
+        qt6 = {
+          path = ./templates/qt6;
+          description = "Qt 6 development shell";
+        };
+        embedded-linux = {
+          path = ./templates/embedded-linux;
+          description = "Embedded Linux development shell";
+        };
+      };
     };
 }

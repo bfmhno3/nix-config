@@ -1,0 +1,25 @@
+{ pkgs, ... }:
+{
+  home.packages = with pkgs; [
+    google-chrome
+    kdePackages.kate
+    localsend
+    easytier
+    texlive.combined.scheme-full
+    google-drive-ocamlfuse
+    telegram-desktop
+    zotero
+    obsidian
+    typora
+    drawio
+    freecad
+    imhex
+    inkscape
+    rpi-imager
+    zeal
+    zed-editor
+    serial-studio
+    tio
+    thunar
+  ];
+}
