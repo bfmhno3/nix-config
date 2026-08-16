@@ -1,26 +1,35 @@
 # nix-config
 
-NixOS and Home Manager configuration for two exported hosts:
+NixOS and Home Manager configuration for one physical host and one exported example:
 
-- `thinkpad-t14s`: physical AMD laptop with Plasma 6 and the Illogical Impulse Hyprland desktop.
-- `test-vm`: headless disposable VM that validates the shared system and Home Manager cores.
+- `thinkpad-t14s`: physical AMD laptop with Plasma 6 and the Illogical Impulse Hyprland desktop, sourced from `hosts/thinkpad-t14s`.
+- `test-vm`: headless disposable VM that validates the shared system and Home Manager cores, sourced from `hosts/examples/test-vm`.
 
 ## Architecture
 
-`flake.nix` uses one `mkHost` factory. Its required parameters are `system`, `hostName`, `username`, `stateVersion`, `gitName`, and `gitEmail`; `extraModules` defaults to an empty list. The factory injects these values into the system and Home Manager layers and selects `hosts/<hostname>/default.nix` plus `hosts/<hostname>/home.nix`.
+`flake.nix` uses one `mkHost` factory. Its required parameters are `system`, `hostName`, `hostPath`, `username`, `stateVersion`, `gitName`, and `gitEmail`; `extraModules` defaults to an empty list. Explicit `hostPath` values decouple source layout from runtime hostnames and flake output names.
+
+`modules/default.nix` centrally registers every reusable NixOS module, and `home/default.nix` centrally registers every reusable Home Manager module. Host files contain machine-local configuration and select behavior through `mySystem.*` and `myHome.*` options instead of importing reusable features.
+
+The flake exposes repository packages at `packages.<system>` and the nixpkgs integration layer at `overlays.default`. Every host uses that overlay through its global package set, which Home Manager shares.
 
 ```text
-modules/core/       mandatory system behavior
-modules/desktop/    reusable desktop services
-modules/hardware/   reusable hardware features
-modules/network/    network tooling and access
-modules/dev/        host-level development integrations
-hosts/              machine system and Home Manager compositions
-home/core/          shared headless user environment
-home/desktop/       desktop environment and host display integration
-home/apps/          desktop applications
-home/dev/           user development tools
-templates/          standalone project development flakes
+modules/default.nix       explicit NixOS option registry
+modules/core/             selectable shared system core
+modules/desktop/          reusable desktop services
+modules/hardware/         reusable hardware features
+modules/network/          network tooling and access
+modules/dev/              host-level development integrations
+hosts/<hostname>/         physical machine configuration and assets
+hosts/examples/           exported nonphysical reference configurations
+home/default.nix          explicit Home Manager option registry
+home/core/                selectable headless user environment
+home/desktop/             desktop environment and display integration
+home/apps/                desktop applications
+home/dev/                 user development tools
+pkgs/                     repository-owned package recipes
+overlays/                 nixpkgs package integration and modifications
+templates/                standalone project development flakes
 ```
 
 Generated physical-host `hardware-configuration.nix` files are immutable repository inputs. Never edit, format, regenerate, or normalize them.
