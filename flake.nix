@@ -24,7 +24,11 @@
     }:
     let
       defaultSystem = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${defaultSystem};
+      defaultOverlay = import ./overlays;
+      pkgs = import nixpkgs {
+        system = defaultSystem;
+        overlays = [ defaultOverlay ];
+      };
       mkHost =
         {
           system,
@@ -46,6 +50,7 @@
               ;
           };
           modules = [
+            { nixpkgs.overlays = [ defaultOverlay ]; }
             ./modules/core
             (./hosts + "/${hostName}")
             home-manager.nixosModules.home-manager
@@ -79,6 +84,8 @@
     in
     {
       formatter.${defaultSystem} = pkgs.nixfmt-tree;
+      overlays.default = defaultOverlay;
+      packages.${defaultSystem} = import ./pkgs { inherit pkgs; };
 
       nixosConfigurations = {
         thinkpad-t14s = mkHost (commonHostArgs // { hostName = "thinkpad-t14s"; });
