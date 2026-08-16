@@ -53,6 +53,7 @@
 
     dev = {
       tools.enable = true;
+      uv.enable = true;
       vscode.enable = true;
       gdb.enable = true;
     };

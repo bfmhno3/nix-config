@@ -30,6 +30,10 @@ in
     home.activation.configureIllogicalImpulse =
       config.lib.dag.entryAfter [ "copyIllogicalImpulseConfigs" ]
         ''
+          cat >> "$HOME/.config/fish/config.fish" <<'FISH'
+          source ${config.programs.fish.sessionVariablesPackage}/etc/profile.d/hm-session-vars.fish
+          FISH
+
           generator="$HOME/.config/quickshell/ii/scripts/colors/generate_colors_material.py"
           ${pkgs.gnused}/bin/sed -i \
             "s/material_colors\['primary_paletteKeyColor'\]/material_colors.get('primary_paletteKeyColor', material_colors['primary'])/" \
