@@ -58,6 +58,18 @@ in
             fi
           }
 
+          env="$HOME/.config/hypr/custom/env.lua"
+          require_once "$env" '-- Use qt6ct (available in Nix profile) instead of upstream "kde"'
+          require_once "$env" 'hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")'
+          ${pkgs.gnused}/bin/sed -i \
+            's/^-- Use qt6ct (available in Nix profile) instead of upstream "kde"$/-- Use KDE platform integration so Qt applications read kdeglobals/' \
+            "$env"
+          ${pkgs.gnused}/bin/sed -i \
+            's/^hl\.env("QT_QPA_PLATFORMTHEME", "qt6ct")$/hl.env("QT_QPA_PLATFORMTHEME", "kde")/' \
+            "$env"
+          require_once "$env" '-- Use KDE platform integration so Qt applications read kdeglobals'
+          require_once "$env" 'hl.env("QT_QPA_PLATFORMTHEME", "kde")'
+
           foot="$HOME/.config/foot/foot.ini"
           require_once "$foot" 'font=JetBrainsMono Nerd Font:size=11'
           ${pkgs.gnused}/bin/sed -i \
