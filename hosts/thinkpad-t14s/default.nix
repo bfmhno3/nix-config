@@ -13,6 +13,10 @@
         enable = true;
         inherit hostName username stateVersion;
       };
+      grub = {
+        enable = true;
+        screen = "4k";
+      };
       nix.enable = true;
       user.enable = true;
       locale.enable = true;
@@ -37,7 +41,6 @@
     };
   };
 
-  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   i18n.defaultLocale = "zh_CN.UTF-8";

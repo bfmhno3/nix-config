@@ -5,6 +5,7 @@ in
 {
   imports = [
     ./nix.nix
+    ./grub.nix
     ./user.nix
     ./locale.nix
     ./network.nix
