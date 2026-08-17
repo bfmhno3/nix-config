@@ -34,6 +34,15 @@ templates/                standalone project development flakes
 
 Generated physical-host `hardware-configuration.nix` files are immutable repository inputs. Never edit, format, regenerate, or normalize them.
 
+## First use
+
+Clone the repository and create the path used by `NH_FLAKE`:
+
+```sh
+mkdir -p "$HOME/Projects" "$HOME/.config"
+git clone https://github.com/bfmhno3/nix-config.git "$HOME/.config/nix-config"
+```
+
 ## Build and test
 
 ```sh

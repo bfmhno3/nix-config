@@ -61,7 +61,7 @@ in
       wget
       curl
     ];
-    home.sessionVariables.NH_FLAKE = "${config.home.homeDirectory}/Projects/nix-config";
+    home.sessionVariables.NH_FLAKE = "${config.home.homeDirectory}/.config/nix-config";
 
     programs.direnv = {
       enable = true;
