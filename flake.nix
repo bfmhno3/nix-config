@@ -59,7 +59,12 @@
               ;
           };
           modules = [
-            { nixpkgs.overlays = [ defaultOverlay ]; }
+            {
+              nixpkgs = {
+                hostPlatform = system;
+                overlays = [ defaultOverlay ];
+              };
+            }
             ./modules
             hostPath
             home-manager.nixosModules.home-manager
@@ -109,6 +114,15 @@
           // {
             hostName = "test-vm";
             hostPath = ./hosts/examples/test-vm;
+          }
+        );
+        wsl2 = mkHost (
+          commonHostArgs
+          // {
+            username = "joe";
+            hostName = "wsl2";
+            hostPath = ./hosts/wsl2;
+            extraModules = [ inputs.nixos-wsl.nixosModules.default ];
           }
         );
       };
