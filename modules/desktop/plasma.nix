@@ -23,7 +23,7 @@ in
       };
       displayManager = {
         sddm.enable = true;
-        defaultSession = "hyprland-uwsm";
+        defaultSession = "hyprland";
       };
       desktopManager.plasma6.enable = true;
     };
