@@ -32,6 +32,7 @@
     desktop = {
       hyprland = {
         enable = true;
+        themes = "end-4/dots-hyprland";
         monitorConfig = builtins.readFile ./monitors.lua;
       };
       common = {
