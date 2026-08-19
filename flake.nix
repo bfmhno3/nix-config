@@ -16,10 +16,6 @@
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    illogical-flake = {
-      url = "github:soymou/illogical-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     omp.url = "github:can1357/oh-my-pi";
   };
 

@@ -1,7 +1,6 @@
-{ inputs, ... }:
+{ ... }:
 {
   imports = [
-    inputs.illogical-flake.homeManagerModules.default
     ./core
     ./apps/media.nix
     ./apps/communication.nix
