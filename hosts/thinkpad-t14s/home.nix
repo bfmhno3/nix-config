@@ -12,6 +12,8 @@
         enable = true;
         inherit username stateVersion;
       };
+      bat.enable = true;
+      eza.enable = true;
       packages.enable = true;
       shell.enable = true;
       git = {

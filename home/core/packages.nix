@@ -24,7 +24,6 @@ in
       fd
       jq
       yq-go
-      eza
       delta
       yazi
       xh
@@ -48,7 +47,6 @@ in
       glow
       btop
       htop
-      bat
       iotop
       iftop
       strace

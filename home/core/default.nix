@@ -4,6 +4,8 @@ let
 in
 {
   imports = [
+    ./bat.nix
+    ./eza.nix
     ./packages.nix
     ./shell.nix
     ./git.nix
