@@ -11,6 +11,7 @@ in
   options.myHome.dev.uv.enable = lib.mkEnableOption "uv Python package and tool manager";
   config = lib.mkIf cfg.enable {
     home.packages = [ pkgs.uv ];
-    home.sessionPath = [ config.xdg.binHome ];
+    home.shellAliases.upip = "uv pip";
+    home.sessionVariables.PATH = "${config.xdg.binHome}:$PATH";
   };
 }
