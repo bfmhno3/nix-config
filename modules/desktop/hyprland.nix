@@ -28,5 +28,6 @@ in
     ];
     xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
     security.pam.services.hyprlock = { };
+    security.pam.services.swaylock = { };
   };
 }
