@@ -37,7 +37,6 @@ stdenv.mkDerivation {
   postPatch = ''
     substituteInPlace CMakeLists.txt \
       --replace-fail gtksourceviewmm-3.0 gtksourceviewmm-4.0
-    sed -i 's/tinyxml2\.so\.10/tinyxml2.so.11/g' CMakeLists.txt
   '';
 
   installPhase = ''

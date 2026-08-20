@@ -28,6 +28,6 @@ in
       }
       // lib.optionalAttrs (cfg.theme == theme) themeSettings;
     };
-    home.file."${config.home.homeDirectory}/.config/starship.toml".force = true;
+    home.file.${config.programs.starship.configPath}.force = true;
   };
 }

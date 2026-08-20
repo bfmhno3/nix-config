@@ -10,7 +10,6 @@ in
     networking = {
       inherit hostName;
       networkmanager.enable = true;
-      firewall.enable = false;
     };
 
     services.openssh = {
