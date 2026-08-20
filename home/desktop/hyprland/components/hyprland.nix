@@ -20,7 +20,7 @@ let
     local home_dir = os.getenv("HOME")
     local path_old = os.getenv("PATH") or ""
     local xdg_data_dirs_old = os.getenv("XDG_DATA_DIRS") or ""
-    hl.env("PATH", home_dir .. "/.nix-profile/bin:/run/current-system/sw/bin:" .. path_old)
+    hl.env("PATH", "/run/wrappers/bin:" .. home_dir .. "/.nix-profile/bin:/run/current-system/sw/bin:" .. path_old)
     hl.env("XDG_DATA_DIRS", home_dir .. "/.nix-profile/share:/run/current-system/sw/share:" .. xdg_data_dirs_old)
     hl.env("QT_QPA_PLATFORMTHEME", "kde")
     LUA
