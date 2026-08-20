@@ -33,6 +33,9 @@
         system = defaultSystem;
         overlays = [ defaultOverlay ];
       };
+      formatter = pkgs.nixfmt-tree.override {
+        settings.formatter.nixfmt.excludes = [ "hosts/*/hardware-configuration.nix" ];
+      };
       mkHost =
         {
           system,
@@ -93,9 +96,24 @@
       };
     in
     {
-      formatter.${defaultSystem} = pkgs.nixfmt-tree;
+      formatter.${defaultSystem} = formatter;
       overlays.default = defaultOverlay;
-      packages.${defaultSystem} = import ./pkgs { inherit pkgs; };
+      packages.${defaultSystem} = nixpkgs.lib.getAttrs [
+        "fcitx5-themes-candlelight"
+        "google-sans-flex"
+        "illogical-impulse-microtex"
+        "illogical-impulse-quickshell"
+        "grub2-theme"
+      ] pkgs;
+
+      devShells.${defaultSystem}.default = pkgs.mkShellNoCC {
+        packages = [
+          formatter
+          pkgs.deadnix
+          pkgs.nh
+          pkgs.statix
+        ];
+      };
 
       nixosConfigurations = {
         thinkpad-t14s = mkHost (
@@ -123,7 +141,16 @@
         );
       };
 
-      checks.${defaultSystem}.test-vm = self.nixosConfigurations.test-vm.config.system.build.toplevel;
+      checks.${defaultSystem} = self.packages.${defaultSystem} // {
+        test-vm = self.nixosConfigurations.test-vm.config.system.build.toplevel;
+        formatting = pkgs.runCommand "formatting-check" { } ''
+          cp -rL ${self} source
+          chmod -R u+w source
+          cd source
+          ${formatter}/bin/treefmt --tree-root . --ci
+          touch $out
+        '';
+      };
 
       templates = {
         stm32 = {
