@@ -17,6 +17,19 @@ in
       withUWSM = false;
       xwayland.enable = true;
     };
+    services = {
+      xserver = {
+        enable = true;
+        xkb = {
+          layout = "cn";
+          variant = "";
+        };
+      };
+      displayManager = {
+        sddm.enable = true;
+        defaultSession = "hyprland";
+      };
+    };
     hardware.i2c.enable = true;
     programs.ydotool.enable = true;
     environment.systemPackages = [ (pkgs.geoclue2.override { withDemoAgent = true; }) ];

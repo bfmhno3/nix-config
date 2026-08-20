@@ -26,7 +26,7 @@
       common.enable = true;
       fonts.enable = true;
       hyprland.enable = true;
-      plasma.enable = true;
+      plasma.enable = false;
       gaming.enable = true;
     };
     hardware = {
