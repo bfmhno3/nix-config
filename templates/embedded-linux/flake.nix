@@ -11,27 +11,29 @@
         "aarch64-linux"
       ];
     in
-    {
-      devShells = nixpkgs.lib.genAttrs systems (
+    let
+      devShellsBySystem = nixpkgs.lib.genAttrs systems (
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
         in
-        {
-          default = pkgs.mkShell {
-            packages = with pkgs; [
-              qemu
-              dtc
-              ubootTools
-              gnumake
-              pkgsCross.aarch64-multiplatform.buildPackages.gcc
-              pkgsCross.riscv64.buildPackages.gcc
-            ];
-            shellHook = ''
-              echo "Embedded Linux shell: $(qemu-system-aarch64 --version | sed -n '1p')"
-            '';
-          };
+        pkgs.mkShell {
+          packages = with pkgs; [
+            qemu
+            dtc
+            ubootTools
+            gnumake
+            pkgsCross.aarch64-multiplatform.buildPackages.gcc
+            pkgsCross.riscv64.buildPackages.gcc
+          ];
+          shellHook = ''
+            echo "Embedded Linux shell: $(qemu-system-aarch64 --version | sed -n '1p')"
+          '';
         }
       );
+    in
+    {
+      devShells = nixpkgs.lib.mapAttrs (_: devShell: { default = devShell; }) devShellsBySystem;
+      checks = nixpkgs.lib.mapAttrs (_: devShell: { dev-shell = devShell; }) devShellsBySystem;
     };
 }

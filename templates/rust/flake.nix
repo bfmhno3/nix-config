@@ -11,26 +11,28 @@
         "aarch64-linux"
       ];
     in
-    {
-      devShells = nixpkgs.lib.genAttrs systems (
+    let
+      devShellsBySystem = nixpkgs.lib.genAttrs systems (
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
         in
-        {
-          default = pkgs.mkShell {
-            packages = with pkgs; [
-              rustc
-              cargo
-              rust-analyzer
-              clippy
-              rustfmt
-            ];
-            shellHook = ''
-              echo "Rust shell: $(rustc --version)"
-            '';
-          };
+        pkgs.mkShell {
+          packages = with pkgs; [
+            rustc
+            cargo
+            rust-analyzer
+            clippy
+            rustfmt
+          ];
+          shellHook = ''
+            echo "Rust shell: $(rustc --version)"
+          '';
         }
       );
+    in
+    {
+      devShells = nixpkgs.lib.mapAttrs (_: devShell: { default = devShell; }) devShellsBySystem;
+      checks = nixpkgs.lib.mapAttrs (_: devShell: { dev-shell = devShell; }) devShellsBySystem;
     };
 }

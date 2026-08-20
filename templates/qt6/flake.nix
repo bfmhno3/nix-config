@@ -11,28 +11,31 @@
         "aarch64-linux"
       ];
     in
-    {
-      devShells = nixpkgs.lib.genAttrs systems (
+    let
+      devShellsBySystem = nixpkgs.lib.genAttrs systems (
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
         in
-        {
-          default = pkgs.mkShell {
-            packages = with pkgs; [
-              gcc
-              gdb
-              cmake
-              ninja
-              pkg-config
-              qt6.qtbase
-              qt6.qttools
-            ];
-            shellHook = ''
-              echo "Qt shell: Qt $(pkg-config --modversion Qt6Core)"
-            '';
-          };
+        pkgs.mkShell {
+          packages = with pkgs; [
+            gcc
+            gdb
+            cmake
+            ninja
+            pkg-config
+            qt6.qtbase
+            qt6.qttools
+          ];
+          shellHook = ''
+            echo "Qt shell: Qt $(pkg-config --modversion Qt6Core)"
+          '';
         }
       );
+    in
+    {
+      devShells = nixpkgs.lib.mapAttrs (_: devShell: { default = devShell; }) devShellsBySystem;
+      checks = nixpkgs.lib.mapAttrs (_: devShell: { dev-shell = devShell; }) devShellsBySystem;
     };
+
 }
