@@ -36,6 +36,7 @@ in
         ];
         waylandFrontend = true;
         settings = {
+          globalOptions.Behavior.ActiveByDefault = true;
           inputMethod = {
             GroupOrder."0" = "Default";
             "Groups/0" = {

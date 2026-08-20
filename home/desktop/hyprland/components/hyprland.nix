@@ -7,6 +7,7 @@
 let
   cfg = config.myHome.desktop.hyprland.components.hyprland;
   hyprlandCfg = config.myHome.desktop.hyprland;
+  inputMethodEnabled = config.myHome.desktop.common.inputMethod.enable;
   theme = "end-4/dots-hyprland";
   enabled = cfg.enable && cfg.theme == theme;
   assets = ../themes/end-4/dots-hyprland/hyprland;
@@ -26,6 +27,13 @@ let
     cat > "$out/.config/hypr/custom/general.lua" <<'LUA'
     ${hyprlandCfg.monitorConfig}
     LUA
+    ${lib.optionalString inputMethodEnabled ''
+      cat > "$out/.config/hypr/custom/execs.lua" <<'LUA'
+      hl.on("hyprland.start", function ()
+          hl.exec_cmd("fcitx5 -d --replace")
+      end)
+      LUA
+    ''}
   '';
   reconcile = import ./reconcile.nix { inherit config lib pkgs; };
 in
