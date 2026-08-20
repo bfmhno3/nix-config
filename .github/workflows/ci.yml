@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@56a7bb7b56d9a92d4fd1bc05758de7eea4a370a8
+
+      - name: Check root flake
+        run: nix flake check --no-write-lock-file --print-build-logs
+
+      - name: Evaluate thinkpad-t14s
+        run: nix eval --raw .#nixosConfigurations.thinkpad-t14s.config.system.build.toplevel.drvPath
+
+      - name: Evaluate test-vm
+        run: nix eval --raw .#nixosConfigurations.test-vm.config.system.build.toplevel.drvPath
+
+      - name: Evaluate wsl2
+        run: nix eval --raw .#nixosConfigurations.wsl2.config.system.build.toplevel.drvPath
+
+      - name: Check Rust template
+        working-directory: templates/rust
+        run: nix flake check --no-write-lock-file --print-build-logs
+
+      - name: Check STM32 template
+        working-directory: templates/stm32
+        run: nix flake check --no-write-lock-file --print-build-logs
+
+      - name: Check Qt 6 template
+        working-directory: templates/qt6
+        run: nix flake check --no-write-lock-file --print-build-logs
+
+      - name: Check embedded Linux template
+        working-directory: templates/embedded-linux
+        run: nix flake check --no-write-lock-file --print-build-logs
