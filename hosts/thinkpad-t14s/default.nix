@@ -36,7 +36,10 @@
     network.enable = true;
     dev = {
       general.enable = true;
-      embedded.enable = true;
+      embedded = {
+        enable = true;
+        stm32cubemx.uiScale = 2;
+      };
       android.enable = true;
     };
   };
