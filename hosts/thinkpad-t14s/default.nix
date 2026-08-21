@@ -26,6 +26,10 @@
       common.enable = true;
       fonts.enable = true;
       hyprland.enable = true;
+      sddm = {
+        enable = true;
+        screen = "4k";
+      };
       plasma.enable = false;
       gaming.enable = true;
     };

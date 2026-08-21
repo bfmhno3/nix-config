@@ -25,10 +25,7 @@ in
           variant = "";
         };
       };
-      displayManager = {
-        sddm.enable = true;
-        defaultSession = "hyprland";
-      };
+      displayManager.defaultSession = "hyprland";
     };
     hardware.i2c.enable = true;
     programs.ydotool.enable = true;

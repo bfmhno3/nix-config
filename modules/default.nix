@@ -5,6 +5,7 @@
     ./desktop/fonts.nix
     ./desktop/hyprland.nix
     ./desktop/plasma.nix
+    ./desktop/sddm.nix
     ./desktop/gaming.nix
     ./hardware/bluetooth.nix
     ./hardware/battery.nix

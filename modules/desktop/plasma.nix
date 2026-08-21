@@ -21,10 +21,6 @@ in
           variant = "";
         };
       };
-      displayManager = {
-        sddm.enable = true;
-        defaultSession = "hyprland";
-      };
       desktopManager.plasma6.enable = true;
     };
   };
