@@ -7,6 +7,7 @@
 }:
 {
   myHome.dev.tools.enable = true;
+  myHome.dev.omp.enable = true;
 
   myHome.core = {
     user = {

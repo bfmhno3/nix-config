@@ -15,6 +15,8 @@
     locale.enable = true;
   };
 
+  mySystem.network.searxng.enable = true;
+
   networking.hostName = hostName;
 
   wsl = {

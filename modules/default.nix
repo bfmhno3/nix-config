@@ -11,6 +11,7 @@
     ./hardware/battery.nix
     ./hardware/nvidia.nix
     ./network
+    ./network/searxng.nix
     ./dev/general.nix
     ./dev/embedded.nix
     ./dev/android.nix

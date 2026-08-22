@@ -143,6 +143,23 @@
       };
 
       checks.${defaultSystem} = self.packages.${defaultSystem} // {
+        searxng = pkgs.testers.runNixOSTest {
+          name = "searxng";
+          nodes.machine = {
+            imports = [ ./modules ];
+            mySystem.network.searxng.enable = true;
+          };
+          testScript = ''
+            machine.wait_for_unit("searx.service")
+            machine.wait_for_open_port(8888)
+            machine.succeed("test -f /var/lib/searx/searx.env")
+            machine.succeed("test \"$(${pkgs.coreutils}/bin/stat -c %a /var/lib/searx/searx.env)\" = 600")
+            machine.succeed("${pkgs.gnugrep}/bin/grep -Eq '^SEARXNG_SECRET=[0-9a-f]{64}$' /var/lib/searx/searx.env")
+            machine.succeed("test \"$(${pkgs.iproute2}/bin/ss -H -ltn4 'sport = :8888' | ${pkgs.gnugrep}/bin/grep -c '127\\.0\\.0\\.1:8888')\" = 1")
+            machine.succeed("test -z \"$(${pkgs.iproute2}/bin/ss -H -ltn6 'sport = :8888')\"")
+            machine.succeed("${pkgs.curl}/bin/curl --fail --silent 'http://127.0.0.1:8888/search?q=1%2B1&format=json&engines=calculator' | ${pkgs.jq}/bin/jq -e '.results | type == \"array\"'")
+          '';
+        };
         test-vm = self.nixosConfigurations.test-vm.config.system.build.toplevel;
         wechat-scaling =
           let

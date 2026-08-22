@@ -20,6 +20,7 @@
     ./desktop/common/input-method.nix
     ./desktop/terminals/foot.nix
     ./dev/tools.nix
+    ./dev/omp.nix
     ./dev/uv.nix
     ./dev/vscode.nix
     ./dev/gdb.nix

@@ -37,7 +37,10 @@
       bluetooth.enable = true;
       battery.enable = true;
     };
-    network.enable = true;
+    network = {
+      enable = true;
+      searxng.enable = true;
+    };
     dev = {
       general.enable = true;
       embedded = {
