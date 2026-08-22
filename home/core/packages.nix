@@ -63,13 +63,21 @@ in
 
     programs.direnv = {
       enable = true;
+      enableBashIntegration = true;
+      enableFishIntegration = false;
       enableZshIntegration = true;
       nix-direnv.enable = true;
     };
 
     programs.zoxide = {
       enable = true;
+      enableBashIntegration = true;
+      enableFishIntegration = true;
       enableZshIntegration = true;
+      options = [
+        "--cmd"
+        "z"
+      ];
     };
 
     programs.nix-index = {

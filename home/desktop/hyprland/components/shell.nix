@@ -25,6 +25,12 @@ let
     cat >> "$out/.config/fish/config.fish" <<'FISH'
 
     source ${fishSessionVariables}/etc/profile.d/hm-session-vars.fish
+
+    if not functions -q __direnv_export_eval
+      ${config.programs.direnv.package}/bin/direnv hook fish | source
+    end
+
+    ${config.programs.zoxide.package}/bin/zoxide init fish --cmd z | source
     FISH
   '';
   reconcile = import ./reconcile.nix { inherit config lib pkgs; };
