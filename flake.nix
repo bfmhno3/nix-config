@@ -143,6 +143,27 @@
 
       checks.${defaultSystem} = self.packages.${defaultSystem} // {
         test-vm = self.nixosConfigurations.test-vm.config.system.build.toplevel;
+        wechat-scaling =
+          let
+            homeConfig = self.nixosConfigurations.thinkpad-t14s.config.home-manager.users.bfmhno3.home;
+            wechatPackages = builtins.filter (
+              package: nixpkgs.lib.getName package == "wechat"
+            ) homeConfig.packages;
+            wechatPackage =
+              assert nixpkgs.lib.assertMsg (
+                builtins.length wechatPackages == 1
+              ) "ThinkPad Home Manager must contain exactly one WeChat package";
+              builtins.head wechatPackages;
+          in
+          assert nixpkgs.lib.assertMsg (
+            !(homeConfig.sessionVariables ? QT_SCALE_FACTOR)
+          ) "ThinkPad Home Manager must not set QT_SCALE_FACTOR globally";
+          pkgs.runCommand "wechat-scaling-check" { } ''
+            test -x ${wechatPackage}/bin/wechat
+            ${pkgs.gnugrep}/bin/grep -Fx "export QT_SCALE_FACTOR='2'" ${wechatPackage}/bin/wechat
+            ${pkgs.gnugrep}/bin/grep -Fx "Exec=wechat %U" ${wechatPackage}/share/applications/wechat.desktop
+            touch $out
+          '';
         formatting = pkgs.runCommand "formatting-check" { } ''
           cp -rL ${self} source
           chmod -R u+w source

@@ -53,6 +53,7 @@
       communication = {
         enable = true;
         qqScale = 2;
+        wechatScale = 2;
       };
       viewer.enable = true;
       productivity.enable = true;
