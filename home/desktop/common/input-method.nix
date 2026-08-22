@@ -32,7 +32,7 @@ in
               rimeIceSimplified
             ];
           })
-          pkgs.fcitx5-themes-candlelight
+          pkgs.fcitx5-theme-ori
         ];
         waylandFrontend = true;
         settings = {
@@ -50,7 +50,7 @@ in
           addons.classicui.globalSection = {
             "Vertical Candidate List" = "False";
             PerScreenDPI = "True";
-            Theme = "macOS-dark";
+            Theme = "OriDark";
           };
         };
       };

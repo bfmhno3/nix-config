@@ -17,7 +17,7 @@ The physical host output is tied to its generated hardware configuration and mus
 The root flake supports `x86_64-linux` and exposes:
 
 - NixOS configurations: `thinkpad-t14s`, `test-vm`, `wsl2`
-- Packages: `fcitx5-themes-candlelight`, `google-sans-flex`, `illogical-impulse-microtex`, `illogical-impulse-quickshell`, `grub2-theme`
+- Packages: `fcitx5-theme-ori`, `fcitx5-themes-candlelight`, `google-sans-flex`, `illogical-impulse-microtex`, `illogical-impulse-quickshell`, `grub2-theme`
 - A maintenance development shell with `treefmt`, `deadnix`, `nh`, and `statix`
 - The nixpkgs integration overlay as `overlays.default`
 

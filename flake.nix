@@ -99,6 +99,7 @@
       formatter.${defaultSystem} = formatter;
       overlays.default = defaultOverlay;
       packages.${defaultSystem} = nixpkgs.lib.getAttrs [
+        "fcitx5-theme-ori"
         "fcitx5-themes-candlelight"
         "google-sans-flex"
         "illogical-impulse-microtex"

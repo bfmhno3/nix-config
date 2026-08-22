@@ -1,6 +1,7 @@
 { pkgs }:
 {
   fcitx5-themes-candlelight = pkgs.callPackage ./fcitx5-themes-candlelight.nix { };
+  fcitx5-theme-ori = pkgs.callPackage ./fcitx5-theme-ori.nix { };
   google-sans-flex = pkgs.callPackage ./google-sans-flex.nix { };
   illogical-impulse-microtex = pkgs.callPackage ./illogical-impulse-microtex.nix {
     gtksourceviewmm = pkgs.gtksourceviewmm4;
