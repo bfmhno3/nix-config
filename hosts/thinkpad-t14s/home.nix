@@ -50,7 +50,10 @@
 
     apps = {
       media.enable = true;
-      communication.enable = true;
+      communication = {
+        enable = true;
+        qqScale = 2;
+      };
       viewer.enable = true;
       productivity.enable = true;
     };
