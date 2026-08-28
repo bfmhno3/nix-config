@@ -40,6 +40,7 @@
     network = {
       enable = true;
       searxng.enable = true;
+      localsend.enable = true;
     };
     dev = {
       general.enable = true;
