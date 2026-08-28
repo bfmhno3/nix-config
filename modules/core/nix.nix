@@ -20,6 +20,14 @@ in
           "https://mirrors.ustc.edu.cn/nix-channels/store"
           "https://cache.nixos.org"
         ];
+        extra-substituters = [
+          "https://nix-community.cachix.org"
+          "https://nixpkgs-wayland.cachix.org"
+        ];
+        extra-trusted-public-keys = [
+          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+          "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
+        ];
         builders-use-substitutes = true;
       };
       gc = {
