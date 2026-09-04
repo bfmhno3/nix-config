@@ -12,6 +12,7 @@
     ./hardware/nvidia.nix
     ./network
     ./network/searxng.nix
+    ./network/dae.nix
     ./network/localsend.nix
     ./dev/general.nix
     ./dev/embedded.nix

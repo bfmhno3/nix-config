@@ -16,6 +16,7 @@
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    dae.url = "github:daeuniverse/flake.nix";
     omp.url = "github:can1357/oh-my-pi?ref=v18.1.10";
   };
 
@@ -64,6 +65,7 @@
                 overlays = [ defaultOverlay ];
               };
             }
+            inputs.dae.nixosModules.dae
             ./modules
             hostPath
             home-manager.nixosModules.home-manager
@@ -146,7 +148,10 @@
         searxng = pkgs.testers.runNixOSTest {
           name = "searxng";
           nodes.machine = {
-            imports = [ ./modules ];
+            imports = [
+              inputs.dae.nixosModules.dae
+              ./modules
+            ];
             mySystem.network.searxng.enable = true;
           };
           testScript = ''

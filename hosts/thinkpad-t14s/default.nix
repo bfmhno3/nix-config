@@ -41,6 +41,7 @@
       enable = true;
       searxng.enable = true;
       localsend.enable = true;
+      dae.enable = false;
     };
     dev = {
       general.enable = true;
