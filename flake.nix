@@ -17,7 +17,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dae.url = "github:daeuniverse/flake.nix";
-    omp.url = "github:can1357/oh-my-pi?ref=v18.1.19";
+    omp.url = "github:can1357/oh-my-pi?ref=v18.2.11";
   };
 
   outputs =
