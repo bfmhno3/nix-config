@@ -4,8 +4,10 @@
     ./desktop/common.nix
     ./desktop/fonts.nix
     ./desktop/hyprland.nix
+    ./desktop/niri.nix
     ./desktop/plasma.nix
     ./desktop/sddm.nix
+    ./desktop/greetd.nix
     ./desktop/gaming.nix
     ./hardware/bluetooth.nix
     ./hardware/battery.nix
