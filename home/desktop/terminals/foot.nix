@@ -55,6 +55,6 @@ in
         text-bindings."\\x03" = "Control+Shift+c";
       };
     };
-    xdg.configFile."foot/foot.ini".force = true;
+    xdg.configFile."foot/foot.ini" = lib.mkIf (cfg.theme == theme) { force = true; };
   };
 }
