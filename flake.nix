@@ -110,6 +110,7 @@
         "google-sans-flex"
         "illogical-impulse-microtex"
         "illogical-impulse-quickshell"
+        "nyxuri-python"
         "grub2-theme"
       ] pkgs;
 

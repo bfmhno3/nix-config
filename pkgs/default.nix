@@ -8,6 +8,7 @@
     tinyxml2 = pkgs."tinyxml-2";
   };
   illogical-impulse-quickshell = pkgs.callPackage ./illogical-impulse-quickshell.nix { };
+  nyxuri-python = pkgs.callPackage ./nyxuri-python.nix { };
   grub2-theme = pkgs.callPackage ./grub2-theme.nix {
     theme = "tela";
     screen = "1080p";
