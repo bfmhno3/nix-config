@@ -14,6 +14,16 @@
     ./desktop/hyprland/components/shell.nix
     ./desktop/hyprland/components/applications.nix
     ./desktop/hyprland/components/services.nix
+    ./desktop/niri
+    ./desktop/niri/components/niri.nix
+    ./desktop/niri/components/noctalia.nix
+    ./desktop/niri/components/kitty.nix
+    ./desktop/niri/components/fish.nix
+    ./desktop/niri/components/fastfetch.nix
+    ./desktop/niri/components/zed.nix
+    ./desktop/niri/components/portal.nix
+    ./desktop/niri/components/nyxmellow.nix
+    ./desktop/niri/components/wallpapers.nix
     ./desktop/common/theme.nix
     ./desktop/common/fonts.nix
     ./desktop/common/xdg.nix
