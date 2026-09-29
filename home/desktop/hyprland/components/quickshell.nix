@@ -48,7 +48,7 @@ let
   declaredSettings = pkgs.writeText "illogical-impulse-declared-settings.json" (
     builtins.toJSON cfg.settings
   );
-  reconcile = import ./reconcile.nix { inherit config lib pkgs; };
+  reconcile = import ../../common/reconcile.nix { inherit config lib pkgs; };
 in
 {
   options.myHome.desktop.hyprland.components.quickshell = {
@@ -86,79 +86,85 @@ in
     home.sessionVariables = lib.mkIf enabled {
       ILLOGICAL_IMPULSE_VIRTUAL_ENV = "${config.xdg.stateHome}/quickshell/.venv";
     };
-    home.activation.reconcileQuickshellTheme = reconcile {
-      component = "quickshell";
-      inherit enabled;
-      source = staged;
-      identity = "${theme}:${staged}";
-    };
-    home.activation.configureQuickshellTheme = lib.mkIf enabled (
-      config.lib.dag.entryAfter [ "reconcileQuickshellTheme" ] ''
-        set -eu
+    home.activation = lib.mkMerge [
+      (reconcile {
+        name = "reconcileQuickshellTheme";
+        scope = "hyprland-theme";
+        component = "quickshell";
+        inherit enabled;
+        source = staged;
+        identity = "${theme}:${staged}";
+      })
+      {
+        configureQuickshellTheme = lib.mkIf enabled (
+          config.lib.dag.entryAfter [ "reconcileQuickshellTheme" ] ''
+            set -eu
 
-        config_home="''${XDG_CONFIG_HOME:-$HOME/.config}"
-        state_home="''${XDG_STATE_HOME:-$HOME/.local/state}"
-        ${pkgs.coreutils}/bin/mkdir -p "$config_home/illogical-impulse" "$state_home/quickshell"
+            config_home="''${XDG_CONFIG_HOME:-$HOME/.config}"
+            state_home="''${XDG_STATE_HOME:-$HOME/.local/state}"
+            ${pkgs.coreutils}/bin/mkdir -p "$config_home/illogical-impulse" "$state_home/quickshell"
 
-        settings="$config_home/illogical-impulse/config.json"
-        if [ ! -e "$settings" ]; then
-          printf '{}\n' > "$settings"
-        fi
-        ${pkgs.jq}/bin/jq -e . "$settings" > /dev/null
-        settings_tmp="$(${pkgs.coreutils}/bin/mktemp "$settings.tmp.XXXXXX")"
-        trap '${pkgs.coreutils}/bin/rm -f "$settings_tmp"' EXIT
-        ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$settings" ${declaredSettings} > "$settings_tmp"
-        ${pkgs.coreutils}/bin/chmod --reference="$settings" "$settings_tmp"
-        ${pkgs.coreutils}/bin/mv "$settings_tmp" "$settings"
-        trap - EXIT
+            settings="$config_home/illogical-impulse/config.json"
+            if [ ! -e "$settings" ]; then
+              printf '{}\n' > "$settings"
+            fi
+            ${pkgs.jq}/bin/jq -e . "$settings" > /dev/null
+            settings_tmp="$(${pkgs.coreutils}/bin/mktemp "$settings.tmp.XXXXXX")"
+            trap '${pkgs.coreutils}/bin/rm -f "$settings_tmp"' EXIT
+            ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$settings" ${declaredSettings} > "$settings_tmp"
+            ${pkgs.coreutils}/bin/chmod --reference="$settings" "$settings_tmp"
+            ${pkgs.coreutils}/bin/mv "$settings_tmp" "$settings"
+            trap - EXIT
 
-        venv="$state_home/quickshell/.venv"
-        if [ -L "$venv" ]; then
-          ${pkgs.coreutils}/bin/rm "$venv"
-        fi
-        ${pkgs.coreutils}/bin/mkdir -p "$venv/bin"
-        ${pkgs.coreutils}/bin/rm -f "$venv/bin/activate" "$venv/pyvenv.cfg"
-        ${pkgs.coreutils}/bin/ln -sfn ${python}/bin/python "$venv/bin/python"
-        ${pkgs.coreutils}/bin/ln -sfn ${python}/bin/python3 "$venv/bin/python3"
-        cat > "$venv/bin/activate" <<EOF
-        _ILLOGICAL_IMPULSE_OLD_PATH="\$PATH"
-        export VIRTUAL_ENV="$venv"
-        export PATH="$venv/bin:\$PATH"
-        deactivate() {
-          PATH="\$_ILLOGICAL_IMPULSE_OLD_PATH"
-          export PATH
-          unset VIRTUAL_ENV _ILLOGICAL_IMPULSE_OLD_PATH
-          unset -f deactivate 2>/dev/null || true
-        }
-        EOF
+            venv="$state_home/quickshell/.venv"
+            if [ -L "$venv" ]; then
+              ${pkgs.coreutils}/bin/rm "$venv"
+            fi
+            ${pkgs.coreutils}/bin/mkdir -p "$venv/bin"
+            ${pkgs.coreutils}/bin/rm -f "$venv/bin/activate" "$venv/pyvenv.cfg"
+            ${pkgs.coreutils}/bin/ln -sfn ${python}/bin/python "$venv/bin/python"
+            ${pkgs.coreutils}/bin/ln -sfn ${python}/bin/python3 "$venv/bin/python3"
+            cat > "$venv/bin/activate" <<EOF
+            _ILLOGICAL_IMPULSE_OLD_PATH="\$PATH"
+            export VIRTUAL_ENV="$venv"
+            export PATH="$venv/bin:\$PATH"
+            deactivate() {
+              PATH="\$_ILLOGICAL_IMPULSE_OLD_PATH"
+              export PATH
+              unset VIRTUAL_ENV _ILLOGICAL_IMPULSE_OLD_PATH
+              unset -f deactivate 2>/dev/null || true
+            }
+            EOF
 
-        kitty_theme="$state_home/quickshell/user/generated/terminal/kitty-theme.conf"
-        if [ -f "$kitty_theme" ] && ${pkgs.gnugrep}/bin/grep -q '#$' "$kitty_theme"; then
-          cat > "$kitty_theme" <<'KITTY'
-        background #1E1E2E
-        foreground #CDD6F4
-        cursor #F5E0DC
-        selection_background #585B70
-        selection_foreground #CDD6F4
-        color0 #45475A
-        color1 #F38BA8
-        color2 #A6E3A1
-        color3 #F9E2AF
-        color4 #89B4FA
-        color5 #F5C2E7
-        color6 #94E2D5
-        color7 #BAC2DE
-        color8 #585B70
-        color9 #F38BA8
-        color10 #A6E3A1
-        color11 #F9E2AF
-        color12 #89B4FA
-        color13 #F5C2E7
-        color14 #94E2D5
-        color15 #A6ADC8
-        KITTY
-        fi
-      ''
-    );
+            kitty_theme="$state_home/quickshell/user/generated/terminal/kitty-theme.conf"
+            if [ -f "$kitty_theme" ] && ${pkgs.gnugrep}/bin/grep -q '#$' "$kitty_theme"; then
+              cat > "$kitty_theme" <<'KITTY'
+            background #1E1E2E
+            foreground #CDD6F4
+            cursor #F5E0DC
+            selection_background #585B70
+            selection_foreground #CDD6F4
+            color0 #45475A
+            color1 #F38BA8
+            color2 #A6E3A1
+            color3 #F9E2AF
+            color4 #89B4FA
+            color5 #F5C2E7
+            color6 #94E2D5
+            color7 #BAC2DE
+            color8 #585B70
+            color9 #F38BA8
+            color10 #A6E3A1
+            color11 #F9E2AF
+            color12 #89B4FA
+            color13 #F5C2E7
+            color14 #94E2D5
+            color15 #A6ADC8
+            KITTY
+            fi
+          ''
+        );
+      }
+    ];
   };
 }

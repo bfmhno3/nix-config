@@ -19,7 +19,7 @@ let
     default = false;
     description = "Whether the ${name} service feature provides its runtime dependencies and managed configuration. Quickshell UI visibility and detailed values are controlled through myHome.desktop.hyprland.components.quickshell.settings.";
   };
-  reconcile = import ./reconcile.nix { inherit config lib pkgs; };
+  reconcile = import ../../common/reconcile.nix { inherit config lib pkgs; };
 in
 {
   options.myHome.desktop.hyprland.components.services = {
@@ -98,16 +98,17 @@ in
         pkgs.kdePackages.kconfig
       ];
 
-    home.activation.reconcileHyprlandServices = reconcile {
-      component = "services";
-      enabled = idleEnabled;
-      source = lockAssets;
-      identity = "${theme}:${lockAssets}";
-    };
-
-    home.activation.configureHyprlandLockServices =
-      config.lib.dag.entryAfter [ "reconcileHyprlandServices" ]
-        ''
+    home.activation = lib.mkMerge [
+      (reconcile {
+        name = "reconcileHyprlandServices";
+        scope = "hyprland-theme";
+        component = "services";
+        enabled = idleEnabled;
+        source = lockAssets;
+        identity = "${theme}:${lockAssets}";
+      })
+      {
+        configureHyprlandLockServices = config.lib.dag.entryAfter [ "reconcileHyprlandServices" ] ''
           set -eu
 
           config_home="''${XDG_CONFIG_HOME:-$HOME/.config}"
@@ -156,5 +157,7 @@ in
             fi
           ''}
         '';
+      }
+    ];
   };
 }

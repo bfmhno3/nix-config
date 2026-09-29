@@ -33,7 +33,7 @@ let
     ${config.programs.zoxide.package}/bin/zoxide init fish --cmd z | source
     FISH
   '';
-  reconcile = import ./reconcile.nix { inherit config lib pkgs; };
+  reconcile = import ../../common/reconcile.nix { inherit config lib pkgs; };
 in
 {
   options.myHome.desktop.hyprland.components.shell = {
@@ -52,7 +52,9 @@ in
         eza
       ]
     );
-    home.activation.reconcileHyprlandShell = reconcile {
+    home.activation = reconcile {
+      name = "reconcileHyprlandShell";
+      scope = "hyprland-theme";
       component = "shell";
       inherit enabled;
       source = staged;

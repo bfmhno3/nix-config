@@ -35,7 +35,7 @@ let
       LUA
     ''}
   '';
-  reconcile = import ./reconcile.nix { inherit config lib pkgs; };
+  reconcile = import ../../common/reconcile.nix { inherit config lib pkgs; };
 in
 {
   options.myHome.desktop.hyprland.components.hyprland = {
@@ -61,7 +61,9 @@ in
         hyprpicker
       ]
     );
-    home.activation.reconcileHyprlandTheme = reconcile {
+    home.activation = reconcile {
+      name = "reconcileHyprlandTheme";
+      scope = "hyprland-theme";
       component = "hyprland";
       inherit enabled;
       source = staged;

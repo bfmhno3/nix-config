@@ -9,7 +9,7 @@ let
   theme = "end-4/dots-hyprland";
   enabled = cfg.enable && cfg.theme == theme;
   assets = ../themes/end-4/dots-hyprland/terminals;
-  reconcile = import ./reconcile.nix { inherit config lib pkgs; };
+  reconcile = import ../../common/reconcile.nix { inherit config lib pkgs; };
 in
 {
   options.myHome.desktop.hyprland.components.terminals = {
@@ -22,7 +22,9 @@ in
 
   config = {
     home.packages = lib.mkIf enabled [ pkgs.kitty ];
-    home.activation.reconcileHyprlandTerminals = reconcile {
+    home.activation = reconcile {
+      name = "reconcileHyprlandTerminals";
+      scope = "hyprland-theme";
       component = "terminals";
       inherit enabled;
       source = assets;

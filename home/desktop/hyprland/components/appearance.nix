@@ -9,7 +9,7 @@ let
   theme = "end-4/dots-hyprland";
   enabled = cfg.enable && cfg.theme == theme;
   assets = ../themes/end-4/dots-hyprland/appearance;
-  reconcile = import ./reconcile.nix { inherit config lib pkgs; };
+  reconcile = import ../../common/reconcile.nix { inherit config lib pkgs; };
 in
 {
   options.myHome.desktop.hyprland.components.appearance = {
@@ -33,7 +33,9 @@ in
         bibata-cursors
       ]
     );
-    home.activation.reconcileHyprlandAppearance = reconcile {
+    home.activation = reconcile {
+      name = "reconcileHyprlandAppearance";
+      scope = "hyprland-theme";
       component = "appearance";
       inherit enabled;
       source = assets;

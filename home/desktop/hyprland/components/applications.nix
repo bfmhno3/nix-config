@@ -9,7 +9,7 @@ let
   theme = "end-4/dots-hyprland";
   enabled = cfg.enable && cfg.theme == theme;
   assets = ../themes/end-4/dots-hyprland/applications;
-  reconcile = import ./reconcile.nix { inherit config lib pkgs; };
+  reconcile = import ../../common/reconcile.nix { inherit config lib pkgs; };
 in
 {
   options.myHome.desktop.hyprland.components.applications = {
@@ -28,7 +28,9 @@ in
         wlogout
       ]
     );
-    home.activation.reconcileHyprlandApplications = reconcile {
+    home.activation = reconcile {
+      name = "reconcileHyprlandApplications";
+      scope = "hyprland-theme";
       component = "applications";
       inherit enabled;
       source = assets;
