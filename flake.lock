@@ -324,6 +324,23 @@
         "type": "github"
       }
     },
+    "nyxuri": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790403982,
+        "narHash": "sha256-lYCvwHCf37codsZtRWjV64yF/ufyOZ+KKZiucSoA2WE=",
+        "owner": "ech678",
+        "repo": "Nyxuri",
+        "rev": "f81546f9d68c515117d93f467646e52d9771dd95",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ech678",
+        "ref": "v3.1.0",
+        "repo": "Nyxuri",
+        "type": "github"
+      }
+    },
     "oh-my-tmux": {
       "flake": false,
       "locked": {
@@ -371,6 +388,7 @@
         "home-manager": "home-manager",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_3",
+        "nyxuri": "nyxuri",
         "oh-my-tmux": "oh-my-tmux",
         "omp": "omp"
       }
