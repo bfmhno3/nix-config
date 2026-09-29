@@ -30,10 +30,10 @@
     };
 
     desktop = {
-      hyprland = {
+      niri = {
         enable = true;
-        themes = "end-4/dots-hyprland";
-        monitorConfig = builtins.readFile ./monitors.lua;
+        themes = "ech678/Nyxuri";
+        monitorConfig = builtins.readFile ./monitor.kdl;
       };
       common = {
         theme.enable = true;
@@ -45,7 +45,6 @@
         xdg.enable = true;
         inputMethod.enable = true;
       };
-      terminals.foot.enable = true;
     };
 
     apps = {

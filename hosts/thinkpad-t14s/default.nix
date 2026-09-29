@@ -25,11 +25,8 @@
     desktop = {
       common.enable = true;
       fonts.enable = true;
-      hyprland.enable = true;
-      sddm = {
-        enable = true;
-        screen = "4k";
-      };
+      niri.enable = true;
+      greetd.enable = true;
       plasma.enable = false;
       gaming.enable = true;
     };
@@ -64,7 +61,7 @@
       fprintAuth = false;
       howdy.enable = false;
     };
-    sddm = {
+    greetd = {
       fprintAuth = true;
       howdy.enable = true;
     };
