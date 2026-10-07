@@ -3,22 +3,36 @@ let
   cfg = config.mySystem.core.locale;
 in
 {
-  options.mySystem.core.locale.enable = lib.mkEnableOption "locale configuration";
+  options.mySystem.core.locale = {
+    enable = lib.mkEnableOption "locale configuration";
+    timeZone = lib.mkOption {
+      type = lib.types.str;
+      default = "Asia/Shanghai";
+    };
+    defaultLocale = lib.mkOption {
+      type = lib.types.str;
+      default = "en_US.UTF-8";
+    };
+    extraLocale = lib.mkOption {
+      type = lib.types.str;
+      default = "zh_CN.UTF-8";
+    };
+  };
 
   config = lib.mkIf cfg.enable {
-    time.timeZone = "Asia/Shanghai";
+    time.timeZone = cfg.timeZone;
     i18n = {
-      defaultLocale = lib.mkDefault "en_US.UTF-8";
+      defaultLocale = cfg.defaultLocale;
       extraLocaleSettings = {
-        LC_ADDRESS = "zh_CN.UTF-8";
-        LC_IDENTIFICATION = "zh_CN.UTF-8";
-        LC_MEASUREMENT = "zh_CN.UTF-8";
-        LC_MONETARY = "zh_CN.UTF-8";
-        LC_NAME = "zh_CN.UTF-8";
-        LC_NUMERIC = "zh_CN.UTF-8";
-        LC_PAPER = "zh_CN.UTF-8";
-        LC_TELEPHONE = "zh_CN.UTF-8";
-        LC_TIME = "zh_CN.UTF-8";
+        LC_ADDRESS = cfg.extraLocale;
+        LC_IDENTIFICATION = cfg.extraLocale;
+        LC_MEASUREMENT = cfg.extraLocale;
+        LC_MONETARY = cfg.extraLocale;
+        LC_NAME = cfg.extraLocale;
+        LC_NUMERIC = cfg.extraLocale;
+        LC_PAPER = cfg.extraLocale;
+        LC_TELEPHONE = cfg.extraLocale;
+        LC_TIME = cfg.extraLocale;
       };
     };
   };
