@@ -49,10 +49,14 @@
 
     apps = {
       media.enable = true;
-      communication = {
+      communication.enable = true;
+      qq = {
         enable = true;
-        qqScale = 2;
-        wechatScale = 2;
+        scale = 2;
+      };
+      wechat = {
+        enable = true;
+        scale = 2;
       };
       viewer.enable = true;
       productivity.enable = true;

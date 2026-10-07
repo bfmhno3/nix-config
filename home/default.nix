@@ -4,6 +4,8 @@
     ./core
     ./apps/media.nix
     ./apps/communication.nix
+    ./apps/qq.nix
+    ./apps/wechat.nix
     ./apps/viewer.nix
     ./apps/productivity.nix
     ./desktop/hyprland

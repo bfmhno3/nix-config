@@ -171,25 +171,46 @@
           '';
         };
         test-vm = self.nixosConfigurations.test-vm.config.system.build.toplevel;
-        wechat-scaling =
+        communication-scaling =
           let
             homeConfig = self.nixosConfigurations.thinkpad-t14s.config.home-manager.users.bfmhno3.home;
-            wechatPackages = builtins.filter (
-              package: nixpkgs.lib.getName package == "wechat"
-            ) homeConfig.packages;
-            wechatPackage =
+            getPackage =
+              name:
+              let
+                matches = builtins.filter (package: nixpkgs.lib.getName package == name) homeConfig.packages;
+              in
               assert nixpkgs.lib.assertMsg (
-                builtins.length wechatPackages == 1
-              ) "ThinkPad Home Manager must contain exactly one WeChat package";
-              builtins.head wechatPackages;
+                builtins.length matches == 1
+              ) "ThinkPad Home Manager must contain exactly one ${name} package";
+              builtins.head matches;
+            qqPackage = getPackage "qq";
+            wechatPackage = getPackage "wechat";
           in
           assert nixpkgs.lib.assertMsg (
             !(homeConfig.sessionVariables ? QT_SCALE_FACTOR)
           ) "ThinkPad Home Manager must not set QT_SCALE_FACTOR globally";
-          pkgs.runCommand "wechat-scaling-check" { } ''
+          pkgs.runCommand "communication-scaling-check" { } ''
+            test -x ${qqPackage}/bin/qq
             test -x ${wechatPackage}/bin/wechat
-            ${pkgs.gnugrep}/bin/grep -Fx "export QT_SCALE_FACTOR='2'" ${wechatPackage}/bin/wechat
+
+            # WeChat runs through XWayland, where the X server advertises
+            # Xft.dpi = 96 * output scale and Qt's xcb plugin derives its base
+            # scale factor from it. Setting a scale must therefore override that
+            # factor (QT_SCREEN_SCALE_FACTORS) and never multiply it
+            # (QT_SCALE_FACTOR renders the UI at 2x the intended size).
+            ${pkgs.gnugrep}/bin/grep -Fx "export QT_SCREEN_SCALE_FACTORS='2'" ${wechatPackage}/bin/wechat
+            if ${pkgs.gnugrep}/bin/grep -q "QT_SCALE_FACTOR" ${wechatPackage}/bin/wechat; then
+              echo "wechat wrapper must not set QT_SCALE_FACTOR: it multiplies the DPI-derived scale"
+              exit 1
+            fi
             ${pkgs.gnugrep}/bin/grep -Fx "Exec=wechat %U" ${wechatPackage}/share/applications/wechat.desktop
+
+            # QQ selects the Ozone platform explicitly at launch (its Electron
+            # build ignores --ozone-platform-hint=auto), and
+            # --force-device-scale-factor only belongs to the X11 branch because
+            # on Wayland it multiplies the compositor scale (2x display -> 4x).
+            ${pkgs.gnugrep}/bin/grep -F -- "flags=(--ozone-platform=wayland)" ${qqPackage}/bin/qq
+            ${pkgs.gnugrep}/bin/grep -F -- "flags=(--ozone-platform=x11 --force-device-scale-factor=2)" ${qqPackage}/bin/qq
             touch $out
           '';
         formatting = pkgs.runCommand "formatting-check" { } ''
