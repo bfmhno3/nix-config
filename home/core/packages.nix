@@ -64,7 +64,7 @@ in
     programs.direnv = {
       enable = true;
       enableBashIntegration = true;
-      enableFishIntegration = false;
+      enableFishIntegration = true;
       enableZshIntegration = true;
       nix-direnv.enable = true;
     };
