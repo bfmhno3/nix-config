@@ -40,6 +40,7 @@
     };
     network = {
       enable = true;
+      clashVerge.enable = true;
       searxng.enable = true;
       localsend.enable = true;
       dae.enable = false;

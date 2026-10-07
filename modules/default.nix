@@ -15,6 +15,7 @@
     ./network
     ./network/searxng.nix
     ./network/dae.nix
+    ./network/clash-verge.nix
     ./network/localsend.nix
     ./dev/general.nix
     ./dev/embedded.nix
