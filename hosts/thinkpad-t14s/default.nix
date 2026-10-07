@@ -19,7 +19,11 @@
       };
       nix.enable = true;
       user.enable = true;
-      locale.enable = true;
+      locale = {
+        enable = true;
+        timeZone = "America/Los_Angeles";
+        extraLocale = "en_US.UTF-8";
+      };
       network.enable = true;
     };
     desktop = {
@@ -51,8 +55,6 @@
   };
 
   boot.loader.efi.canTouchEfiVariables = true;
-
-  i18n.defaultLocale = "zh_CN.UTF-8";
 
   services.fprintd.enable = true;
 
