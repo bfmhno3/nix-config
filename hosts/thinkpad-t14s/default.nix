@@ -52,6 +52,7 @@
         stm32cubemx.uiScale = 2;
       };
       android.enable = true;
+      codexDesktop.enable = true;
     };
   };
 

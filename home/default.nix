@@ -8,6 +8,7 @@
     ./apps/wechat.nix
     ./apps/viewer.nix
     ./apps/productivity.nix
+    ./apps/codex-desktop.nix
     ./desktop/hyprland
     ./desktop/hyprland/components/hyprland.nix
     ./desktop/hyprland/components/quickshell.nix

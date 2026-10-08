@@ -60,6 +60,7 @@
       };
       viewer.enable = true;
       productivity.enable = true;
+      codexDesktop.enable = true;
     };
 
     dev = {

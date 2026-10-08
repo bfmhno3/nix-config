@@ -20,5 +20,6 @@
     ./dev/general.nix
     ./dev/embedded.nix
     ./dev/android.nix
+    ./dev/codex-desktop.nix
   ];
 }

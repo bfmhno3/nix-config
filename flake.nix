@@ -22,6 +22,7 @@
       url = "github:ech678/Nyxuri/v3.1.0";
       flake = false;
     };
+    codex-desktop-linux.url = "github:ilysenko/codex-desktop-linux";
   };
 
   outputs =
