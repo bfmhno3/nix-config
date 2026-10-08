@@ -36,5 +36,7 @@
     ./dev/uv.nix
     ./dev/vscode.nix
     ./dev/gdb.nix
+    ./dev/codex.nix
+    ./dev/claude-code.nix
   ];
 }

@@ -68,6 +68,8 @@
       uv.enable = true;
       vscode.enable = true;
       gdb.enable = true;
+      codex.enable = true;
+      claudeCode.enable = true;
     };
   };
 }
