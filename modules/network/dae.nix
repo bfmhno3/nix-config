@@ -183,7 +183,14 @@ let
   '';
 in
 {
-  options.mySystem.network.dae.enable = lib.mkEnableOption "dae transparent proxy and daed dashboard";
+  options.mySystem.network.dae = {
+    enable = lib.mkEnableOption "dae transparent proxy and daed dashboard";
+    autoStart = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Start dae at boot; when false, start it manually with systemctl.";
+    };
+  };
 
   config = lib.mkIf cfg.enable {
     services.dae = {
@@ -201,6 +208,8 @@ in
 
       # disableTxChecksumIpGeneric = true;
     };
+
+    systemd.services.dae.wantedBy = lib.mkIf (!cfg.autoStart) (lib.mkForce [ ]);
 
     environment.etc."dae/config.dae" = {
       source = daeConfig;
