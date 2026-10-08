@@ -1,5 +1,6 @@
 { pkgs }:
 {
+  cc-switch = pkgs.callPackage ./cc-switch.nix { };
   fcitx5-themes-candlelight = pkgs.callPackage ./fcitx5-themes-candlelight.nix { };
   fcitx5-theme-ori = pkgs.callPackage ./fcitx5-theme-ori.nix { };
   google-sans-flex = pkgs.callPackage ./google-sans-flex.nix { };
