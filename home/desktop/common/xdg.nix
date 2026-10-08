@@ -11,6 +11,14 @@ in
       mimeApps = {
         enable = true;
         defaultApplications = {
+          # The Codex/ChatGPT desktop package ships a chatgpt.desktop that claims
+          # x-scheme-handler/http and https and republishes it in
+          # ~/.local/share/applications on every launch. Without an explicit
+          # default, the xdg-utils and glib fallback (first entry in the user
+          # mimeinfo.cache) picks ChatGPT over Chrome.
+          "text/html" = [ "google-chrome.desktop" ];
+          "x-scheme-handler/http" = [ "google-chrome.desktop" ];
+          "x-scheme-handler/https" = [ "google-chrome.desktop" ];
           "application/pdf" = [ "org.pwmt.zathura.desktop" ];
           "video/mp4" = [ "mpv.desktop" ];
           "video/x-matroska" = [ "mpv.desktop" ];
