@@ -17,7 +17,6 @@ let
       log_level: info
       disable_waiting_network: false
       disable_thp: true
-      lan_interface: br-lan
       wan_interface: auto
       auto_config_kernel_parameter: true
       tcp_check_url: 'http://cp.cloudflare.com,1.1.1.1,2606:4700:4700::1111'
@@ -195,7 +194,7 @@ in
   config = lib.mkIf cfg.enable {
     services.dae = {
       enable = true;
-      package = inputs.dae.packages.${pkgs.system}.dae-unstable;
+      package = inputs.dae.packages.${pkgs.stdenv.hostPlatform.system}.dae-unstable;
       configFile = "/etc/dae/config.dae";
       assets = with pkgs; [
         v2ray-geoip
