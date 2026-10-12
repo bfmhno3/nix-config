@@ -14,16 +14,6 @@ in
     fonts = {
       packages = with pkgs; [
         material-design-icons
-        google-sans-flex
-        (google-fonts.override {
-          fonts = [
-            "Readex Pro"
-            "Space Grotesk"
-          ];
-        })
-        material-symbols
-        rubik
-        twemoji-color-font
         maple-mono.NF-CN
         noto-fonts
         noto-fonts-cjk-sans

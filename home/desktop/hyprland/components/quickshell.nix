@@ -81,6 +81,16 @@ in
         xdg-utils
         yq-go
         libqalculate
+        google-sans-flex
+        (google-fonts.override {
+          fonts = [
+            "Readex Pro"
+            "Space Grotesk"
+          ];
+        })
+        material-symbols
+        rubik
+        twemoji-color-font
       ]
     );
     home.sessionVariables = lib.mkIf enabled {
