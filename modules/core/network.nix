@@ -1,16 +1,12 @@
 { config, lib, ... }:
 let
   cfg = config.mySystem.core.network;
-  hostName = config.mySystem.core.base.hostName;
 in
 {
   options.mySystem.core.network.enable = lib.mkEnableOption "core networking";
 
   config = lib.mkIf cfg.enable {
-    networking = {
-      inherit hostName;
-      networkmanager.enable = true;
-    };
+    networking.networkmanager.enable = true;
 
     services.openssh = {
       enable = true;

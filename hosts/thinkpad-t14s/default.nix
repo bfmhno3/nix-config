@@ -1,18 +1,8 @@
 {
-  hostName,
-  stateVersion,
-  username,
-  ...
-}:
-{
   imports = [ ./hardware-configuration.nix ];
 
   mySystem = {
     core = {
-      base = {
-        enable = true;
-        inherit hostName username stateVersion;
-      };
       grub = {
         enable = true;
         screen = "4k";

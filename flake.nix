@@ -65,20 +65,16 @@
           extraModules ? [ ],
         }:
         nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit
-              inputs
-              hostName
-              username
-              stateVersion
-              ;
-          };
+          specialArgs = { inherit inputs; };
           modules = [
             {
               nixpkgs = {
                 hostPlatform = system;
                 inherit overlays;
+              };
+              mySystem.core.base = {
+                enable = true;
+                inherit hostName username stateVersion;
               };
             }
             inputs.dae.nixosModules.dae
@@ -90,16 +86,20 @@
                 useGlobalPkgs = true;
                 sharedModules = [ ./home ];
                 useUserPackages = true;
-                extraSpecialArgs = {
-                  inherit
-                    inputs
-                    username
-                    stateVersion
-                    gitName
-                    gitEmail
-                    ;
+                extraSpecialArgs = { inherit inputs; };
+                users.${username} = {
+                  imports = [ (hostPath + "/home.nix") ];
+                  myHome.core = {
+                    user = {
+                      enable = true;
+                      inherit username stateVersion;
+                    };
+                    git = {
+                      name = gitName;
+                      email = gitEmail;
+                    };
+                  };
                 };
-                users.${username} = import (hostPath + "/home.nix");
               };
             }
           ]

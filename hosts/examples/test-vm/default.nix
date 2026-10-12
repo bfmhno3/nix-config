@@ -1,15 +1,6 @@
-{
-  hostName,
-  stateVersion,
-  username,
-  ...
-}:
+{ config, ... }:
 {
   mySystem.core = {
-    base = {
-      enable = true;
-      inherit hostName username stateVersion;
-    };
     nix.enable = true;
     user.enable = true;
     locale.enable = true;
@@ -24,7 +15,7 @@
     fsType = "tmpfs";
   };
 
-  services.getty.autologinUser = username;
+  services.getty.autologinUser = config.mySystem.core.base.username;
 
   virtualisation.vmVariant.virtualisation = {
     cores = 2;

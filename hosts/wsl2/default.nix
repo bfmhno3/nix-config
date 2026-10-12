@@ -1,15 +1,6 @@
-{
-  hostName,
-  stateVersion,
-  username,
-  ...
-}:
+{ config, ... }:
 {
   mySystem.core = {
-    base = {
-      enable = true;
-      inherit hostName username stateVersion;
-    };
     nix.enable = true;
     user.enable = true;
     locale.enable = true;
@@ -17,11 +8,9 @@
 
   mySystem.network.searxng.enable = true;
 
-  networking.hostName = hostName;
-
   wsl = {
     enable = true;
-    defaultUser = username;
+    defaultUser = config.mySystem.core.base.username;
     docker-desktop.enable = true;
   };
 

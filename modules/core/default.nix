@@ -25,6 +25,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    networking.hostName = cfg.hostName;
     system.stateVersion = cfg.stateVersion;
   };
 }
