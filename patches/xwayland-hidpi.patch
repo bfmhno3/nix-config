@@ -1,0 +1,98 @@
+diff --git a/src/java.desktop/unix/classes/sun/awt/X11/XToolkit.java b/src/java.desktop/unix/classes/sun/awt/X11/XToolkit.java
+index 0f6aa73..21fb8d6 100644
+--- a/src/java.desktop/unix/classes/sun/awt/X11/XToolkit.java
++++ b/src/java.desktop/unix/classes/sun/awt/X11/XToolkit.java
+@@ -179,6 +179,11 @@ public final class XToolkit extends UNIXToolkit implements Runnable {
+      */
+     private boolean loadedXSettings;
+ 
++    /**
++     * UI scale reported by the desktop over XSETTINGS, 1 until it is known.
++     */
++    private static volatile int xSettingsScale = 1;
++
+     /**
+     * XSETTINGS for the default screen.
+      * <p>
+@@ -1497,6 +1502,9 @@ public final class XToolkit extends UNIXToolkit implements Runnable {
+             if(SunGraphicsEnvironment.isUIScaleEnabled()) {
+                 addPropertyChangeListener("gnome.Xft/DPI", evt ->
+                                                      localEnv.displayChanged());
++                // XSETTINGS also carries the UI scale, and it has to be known
++                // before the first peer is created, so read it right away.
++                initXSettingsIfNeeded("gnome.Xft/DPI");
+             }
+         }
+     }
+@@ -1616,6 +1624,33 @@ public final class XToolkit extends UNIXToolkit implements Runnable {
+         return false;
+     }
+ 
++    /**
++     * Returns the UI scale the desktop reports over XSETTINGS, or 1 when it
++     * reports none.
++     */
++    public static int getXSettingsScale() {
++        return xSettingsScale;
++    }
++
++    /**
++     * UI scale implied by a set of XSETTINGS values. Xft/DPI is in 1024ths of a
++     * dpi and is what most toolkits scale by, Gdk/WindowScalingFactor is the
++     * integer scale GDK itself uses; either one may be present, so the larger of
++     * the two is taken.
++     */
++    private static int scaleFromXSettings(Map<String, Object> settings) {
++        int scale = 1;
++        Object dpi = settings.get("Xft/DPI");
++        if (dpi instanceof Number number) {
++            scale = Math.max(scale, (int) Math.round(number.doubleValue() / 1024 / 96));
++        }
++        Object factor = settings.get("Gdk/WindowScalingFactor");
++        if (factor instanceof Number number) {
++            scale = Math.max(scale, number.intValue());
++        }
++        return scale;
++    }
++
+     private void loadXSettings() {
+        xs = new XAWTXSettings();
+     }
+@@ -1636,6 +1671,18 @@ public final class XToolkit extends UNIXToolkit implements Runnable {
+             return;
+         }
+ 
++        if (SunGraphicsEnvironment.isUIScaleEnabled()) {
++            int scale = scaleFromXSettings(updatedSettings);
++            if (scale != xSettingsScale) {
++                xSettingsScale = scale;
++                if (!GraphicsEnvironment.isHeadless()) {
++                    // Re-scale the screen devices, the same way a change of the
++                    // gnome.Xft/DPI desktop property does.
++                    localEnv.displayChanged();
++                }
++            }
++        }
++
+         for (Map.Entry<String, Object> e : updatedSettings.entrySet()) {
+             String name = e.getKey();
+ 
+diff --git a/src/java.desktop/unix/classes/sun/awt/X11GraphicsDevice.java b/src/java.desktop/unix/classes/sun/awt/X11GraphicsDevice.java
+index ff25120..f6245af 100644
+--- a/src/java.desktop/unix/classes/sun/awt/X11GraphicsDevice.java
++++ b/src/java.desktop/unix/classes/sun/awt/X11GraphicsDevice.java
+@@ -592,8 +592,12 @@ public final class X11GraphicsDevice extends GraphicsDevice
+             if (debugScale >= 1) {
+                 return (int) debugScale;
+             }
+-            int nativeScale = getNativeScale();
+-            return nativeScale >= 1 ? nativeScale : 1;
++            // Xwayland reports the X screen at 96 dpi whatever the compositor
++            // scales at, so the native scale is 1 there and the scale the desktop
++            // reports over XSETTINGS has to be used instead. On an X11 screen the
++            // native scale is the larger one and wins.
++            int scale = Math.max(XToolkit.getXSettingsScale(), getNativeScale());
++            return scale >= 1 ? scale : 1;
+         }
+ 
+         return 1;
