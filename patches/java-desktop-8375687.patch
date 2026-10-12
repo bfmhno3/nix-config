@@ -1,0 +1,17 @@
+--- a/src/java.desktop/unix/classes/sun/awt/X11/XFramePeer.java
++++ b/src/java.desktop/unix/classes/sun/awt/X11/XFramePeer.java
+@@ -250,12 +250,12 @@
+             XSizeHints hints = getHints();
+             hints.set_flags(hints.get_flags() | (int)XUtilConstants.PMaxSize);
+             if (b.width != Integer.MAX_VALUE) {
+-                hints.set_max_width(b.width);
++                hints.set_max_width(scaleUp(b.width));
+             } else {
+                 hints.set_max_width((int)XlibWrapper.DisplayWidth(XToolkit.getDisplay(), XlibWrapper.DefaultScreen(XToolkit.getDisplay())));
+             }
+             if (b.height != Integer.MAX_VALUE) {
+-                hints.set_max_height(b.height);
++                hints.set_max_height(scaleUp(b.height));
+             } else {
+                 hints.set_max_height((int)XlibWrapper.DisplayHeight(XToolkit.getDisplay(), XlibWrapper.DefaultScreen(XToolkit.getDisplay())));
+             }
