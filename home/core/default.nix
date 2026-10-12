@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  cfg = config.myHome.core.user;
+  cfg = config.myHome.core;
 in
 {
   imports = [
@@ -15,6 +15,8 @@ in
     ./editors/helix.nix
   ];
 
+  options.myHome.core.enable = lib.mkEnableOption "every headless core user module";
+
   options.myHome.core.user = {
     enable = lib.mkEnableOption "Home Manager user configuration";
     username = lib.mkOption {
@@ -25,11 +27,28 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    home = {
-      username = cfg.username;
-      homeDirectory = "/home/${cfg.username}";
-      stateVersion = cfg.stateVersion;
-    };
-  };
+  config = lib.mkMerge [
+    (lib.mkIf cfg.user.enable {
+      home = {
+        username = cfg.user.username;
+        homeDirectory = "/home/${cfg.user.username}";
+        stateVersion = cfg.user.stateVersion;
+      };
+    })
+    (lib.mkIf cfg.enable {
+      myHome.core = {
+        bat.enable = lib.mkDefault true;
+        eza.enable = lib.mkDefault true;
+        packages.enable = lib.mkDefault true;
+        shell.enable = lib.mkDefault true;
+        git.enable = lib.mkDefault true;
+        tmux.enable = lib.mkDefault true;
+        starship.enable = lib.mkDefault true;
+        editors = {
+          nvim.enable = lib.mkDefault true;
+          helix.enable = lib.mkDefault true;
+        };
+      };
+    })
+  ];
 }

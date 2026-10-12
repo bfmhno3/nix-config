@@ -1,18 +1,9 @@
 {
-  myHome.dev.tools.enable = true;
-  myHome.dev.omp.enable = true;
-
-  myHome.core = {
-    bat.enable = true;
-    eza.enable = true;
-    packages.enable = true;
-    shell.enable = true;
-    git.enable = true;
-    tmux.enable = true;
-    starship.enable = true;
-    editors = {
-      nvim.enable = true;
-      helix.enable = true;
+  myHome = {
+    core.enable = true;
+    dev = {
+      tools.enable = true;
+      omp.enable = true;
     };
   };
 }
