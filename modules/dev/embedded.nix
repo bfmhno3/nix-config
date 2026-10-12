@@ -43,7 +43,7 @@ in
       segger-jlink
       stm32cubemx
       saleae-logic-2
-      kicad
+      unstable.kicad
       minicom
       picocom
     ];
