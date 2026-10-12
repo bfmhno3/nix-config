@@ -4,7 +4,7 @@ This repository uses Nix flakes and Home Manager for reproducible NixOS hosts an
 
 ## Architecture
 
-`flake.nix` provides one `mkHost` factory and the project template registry. Every host supplies `system`, `hostName`, `hostPath`, `username`, `stateVersion`, `gitName`, and `gitEmail`; `extraModules` is optional. `hostPath` selects the source directory independently of the runtime hostname and flake output name. Reusable modules must not hard-code usernames, hostnames, home directories, state versions, Git identity, or host source paths.
+`flake.nix` provides one `mkHost` factory and the project template registry. Every host supplies `system`, `hostName`, `hostPath`, `username`, `stateVersion`, `gitName`, and `gitEmail`; `extraModules` is optional. `hostPath` selects the source directory independently of the runtime hostname and flake output name. `mkHost` assigns the identity values to `mySystem.core.base` and `myHome.core.user`/`myHome.core.git`; host files never take them as arguments. Reusable modules must not hard-code usernames, hostnames, home directories, state versions, Git identity, or host source paths.
 
 Keep these layers distinct:
 
@@ -14,6 +14,7 @@ Keep these layers distinct:
 - `pkgs/` contains repository package recipes for software absent from nixpkgs or without a usable upstream flake.
 - `patches/` holds every patch file: those `pkgs/` recipes apply and those prepared for upstream submission. Recipes reference them as `../patches/<name>.patch`.
 - `overlays/` integrates repository packages into nixpkgs and applies repository-owned nixpkgs package modifications. The public default overlay is `overlays.default`.
+- `checks.nix` holds the flake checks; `nix flake check` also builds every package in `pkgs/`.
 - `templates/` owns standalone project development flakes. Compilers, build systems, and language toolchains belong in these shells rather than the global user environment, and templates must not depend on root package or overlay entrypoints.
 
 Keep physical display topology in the owning host directory. The ThinkPad passes `hosts/thinkpad-t14s/monitor.kdl` to `myHome.desktop.niri.monitorConfig`.

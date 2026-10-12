@@ -2,7 +2,7 @@
 
 Personal NixOS and Home Manager configuration with three exported hosts:
 
-- `thinkpad-t14s`: physical AMD laptop running Hyprland. Plasma is disabled. Source: `hosts/thinkpad-t14s`.
+- `thinkpad-t14s`: physical AMD laptop running niri with the Nyxuri theme. Source: `hosts/thinkpad-t14s`.
 - `test-vm`: headless disposable VM for validating the shared system and Home Manager cores. Source: `hosts/examples/test-vm`.
 - `wsl2`: personal WSL configuration for the `joe` user. Source: `hosts/wsl2`.
 
@@ -10,14 +10,16 @@ The physical host output is tied to its generated hardware configuration and mus
 
 ## Architecture
 
-`flake.nix` uses one `mkHost` factory. Its required parameters are `system`, `hostName`, `hostPath`, `username`, `stateVersion`, `gitName`, and `gitEmail`; `extraModules` defaults to an empty list. Explicit `hostPath` values decouple source layout from runtime hostnames and flake output names.
+`flake.nix` uses one `mkHost` factory. Its required parameters are `system`, `hostName`, `hostPath`, `username`, `stateVersion`, `gitName`, and `gitEmail`; `extraModules` defaults to an empty list. `mkHost` assigns the identity values to `mySystem.core.base` and `myHome.core.user`/`myHome.core.git`, so host files never receive them as arguments. Explicit `hostPath` values decouple source layout from runtime hostnames and flake output names.
 
-`modules/default.nix` centrally registers every reusable NixOS module, and `home/default.nix` centrally registers every reusable Home Manager module. Host files contain machine-local configuration and select behavior through `mySystem.*` and `myHome.*` options instead of importing reusable features.
+`modules/default.nix` centrally registers every reusable NixOS module, and `home/default.nix` centrally registers every reusable Home Manager module. Host files contain machine-local configuration and select behavior through `mySystem.*` and `myHome.*` options instead of importing reusable features. `myHome.core.enable` turns on the whole headless user core; hosts only state exceptions.
+
+Desktops are kept as a library even when no host selects them: `myHome.desktop.niri.themes = "ech678/Nyxuri"` and `myHome.desktop.hyprland.themes = "end-4/dots-hyprland"` each compose their own components.
 
 The root flake supports `x86_64-linux` and exposes:
 
 - NixOS configurations: `thinkpad-t14s`, `test-vm`, `wsl2`
-- Packages: `fcitx5-theme-ori`, `fcitx5-themes-candlelight`, `google-sans-flex`, `illogical-impulse-microtex`, `illogical-impulse-quickshell`, `grub2-theme`
+- Packages: every recipe registered in `pkgs/default.nix`
 - A maintenance development shell with `treefmt`, `deadnix`, `nh`, and `statix`
 - The nixpkgs integration overlay as `overlays.default`
 
@@ -41,6 +43,7 @@ pkgs/                     repository-owned package recipes
 patches/                  patch files applied by packages or prepared upstream
 overlays/                 nixpkgs package integration and modifications
 templates/                standalone project development flakes
+checks.nix                flake checks beyond package builds
 ```
 
 Generated physical-host `hardware-configuration.nix` files are immutable repository inputs. Never edit, format, regenerate, or normalize them.
