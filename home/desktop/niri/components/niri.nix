@@ -46,8 +46,13 @@ let
       --replace-fail '#!/bin/bash' '#!/usr/bin/env bash'
     substituteInPlace "$d/scripts/niri-scratch-menu.py" \
       --replace-fail '#!/usr/bin/env python3' '#!${pkgs.nyxuri-python}/bin/python3'
+    # Fcitx 5 autostarts from its NixOS user service. The copy spawned here
+    # races it for the org.fcitx.Fcitx5 D-Bus name, and the loser exits with
+    # every addon unloaded, which left the session with a working input method
+    # but no candidate window.
     substituteInPlace "$d/config.kdl" \
-      --replace-fail 'screenshot-path "~/Pictures/Screenshots/' 'screenshot-path "${config.xdg.userDirs.pictures}/Screenshots/'
+      --replace-fail 'screenshot-path "~/Pictures/Screenshots/' 'screenshot-path "${config.xdg.userDirs.pictures}/Screenshots/' \
+      --replace-fail 'spawn-at-startup "sh" "-c" "command -v fcitx5 >/dev/null 2>&1 && exec fcitx5 -d"' '// started by the fcitx5 user service'
     chmod 0755 "$d"/scripts/*
 
     export HOME="$TMPDIR"
