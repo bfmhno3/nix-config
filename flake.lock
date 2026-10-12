@@ -48,6 +48,26 @@
         "type": "github"
       }
     },
+    "claude-desktop": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791632398,
+        "narHash": "sha256-p3cevtWdbjq0B4p11w+vZm9nWKcDF0SYvjCVP4zvZtI=",
+        "owner": "nmcbride",
+        "repo": "claude-desktop-nix",
+        "rev": "3f47c887e488194ab839178702408b26167c5085",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nmcbride",
+        "repo": "claude-desktop-nix",
+        "type": "github"
+      }
+    },
     "codex-desktop-linux": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -452,6 +472,7 @@
     },
     "root": {
       "inputs": {
+        "claude-desktop": "claude-desktop",
         "codex-desktop-linux": "codex-desktop-linux",
         "dae": "dae",
         "helix": "helix",

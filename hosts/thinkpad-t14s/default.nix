@@ -57,6 +57,7 @@
       };
       android.enable = true;
       codexDesktop.enable = true;
+      claudeDesktop.enable = true;
     };
   };
 

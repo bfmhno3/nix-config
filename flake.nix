@@ -24,6 +24,10 @@
       flake = false;
     };
     codex-desktop-linux.url = "github:ilysenko/codex-desktop-linux";
+    claude-desktop = {
+      url = "github:nmcbride/claude-desktop-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

@@ -22,5 +22,6 @@
     ./dev/stm32cubemx.nix
     ./dev/android.nix
     ./dev/codex-desktop.nix
+    ./dev/claude-desktop.nix
   ];
 }
