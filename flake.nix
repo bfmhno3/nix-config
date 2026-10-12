@@ -18,7 +18,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dae.url = "github:daeuniverse/flake.nix";
-    omp.url = "github:can1357/oh-my-pi?ref=v18.8.0";
+    omp.url = "github:can1357/oh-my-pi?ref=v18.10.2";
     nyxuri = {
       url = "github:ech678/Nyxuri/v3.1.0";
       flake = false;
