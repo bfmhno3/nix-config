@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.mySystem.network.clashVerge;
 in
@@ -10,6 +15,7 @@ in
     programs.clash-verge = {
       enable = true;
       serviceMode = true;
+      package = pkgs.unstable.clash-verge-rev;
     };
 
     # Proxied replies injected on the TUN device are dropped by strict reverse path
