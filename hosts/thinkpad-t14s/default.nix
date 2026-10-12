@@ -38,7 +38,7 @@
       battery.enable = true;
     };
     network = {
-      enable = true;
+      tools.enable = true;
       clashVerge.enable = true;
       searxng.enable = true;
       localsend.enable = true;

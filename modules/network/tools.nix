@@ -5,11 +5,11 @@
   ...
 }:
 let
-  cfg = config.mySystem.network;
+  cfg = config.mySystem.network.tools;
   username = config.mySystem.core.base.username;
 in
 {
-  options.mySystem.network.enable = lib.mkEnableOption "network analysis tools";
+  options.mySystem.network.tools.enable = lib.mkEnableOption "network analysis tools";
   config = lib.mkIf cfg.enable {
     programs.wireshark = {
       enable = true;

@@ -12,7 +12,7 @@
     ./hardware/bluetooth.nix
     ./hardware/battery.nix
     ./hardware/nvidia.nix
-    ./network
+    ./network/tools.nix
     ./network/searxng.nix
     ./network/dae.nix
     ./network/clash-verge.nix
