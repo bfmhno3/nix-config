@@ -17,12 +17,14 @@ in
     services.udev.packages = with pkgs; [
       openocd
       stlink
+      probe-rs-tools
       segger-jlink
       saleae-logic-2
     ];
     environment.systemPackages = with pkgs; [
       openocd
       stlink
+      probe-rs-tools
       segger-jlink
       saleae-logic-2
       unstable.kicad
