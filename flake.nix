@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     helix.url = "github:helix-editor/helix/master";
     oh-my-tmux = {
       url = "github:gpakosz/.tmux";
@@ -29,15 +30,21 @@
     inputs@{
       self,
       nixpkgs,
+      nixpkgs-unstable,
       home-manager,
       ...
     }:
     let
       defaultSystem = "x86_64-linux";
       defaultOverlay = import ./overlays;
+      unstableOverlay = import ./overlays/unstable.nix { inherit nixpkgs-unstable; };
+      overlays = [
+        defaultOverlay
+        unstableOverlay
+      ];
       pkgs = import nixpkgs {
         system = defaultSystem;
-        overlays = [ defaultOverlay ];
+        inherit overlays;
       };
       formatter = pkgs.nixfmt-tree.override {
         settings.formatter.nixfmt.excludes = [ "hosts/*/hardware-configuration.nix" ];
@@ -67,7 +74,7 @@
             {
               nixpkgs = {
                 hostPlatform = system;
-                overlays = [ defaultOverlay ];
+                inherit overlays;
               };
             }
             inputs.dae.nixosModules.dae

@@ -21,6 +21,8 @@ The root flake supports `x86_64-linux` and exposes:
 - A maintenance development shell with `treefmt`, `deadnix`, `nh`, and `statix`
 - The nixpkgs integration overlay as `overlays.default`
 
+Packages that the `nixos-26.05` branch has not caught up with come from the `nixpkgs-unstable` input and are selectable in any system or Home Manager module as `pkgs.unstable.<attribute>`, for example `pkgs.unstable.vscode`, `pkgs.unstable.codex`, and `pkgs.unstable.claude-code` in `home/dev/`. `overlays.default` keeps exposing repository packages only; `overlays/unstable.nix` provides that attribute.
+
 ```text
 modules/default.nix       explicit NixOS option registry
 modules/core/             selectable shared system core
