@@ -19,6 +19,7 @@
     ./network/localsend.nix
     ./dev/general.nix
     ./dev/embedded.nix
+    ./dev/stm32cubemx.nix
     ./dev/android.nix
     ./dev/codex-desktop.nix
   ];

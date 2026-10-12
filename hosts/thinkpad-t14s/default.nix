@@ -50,9 +50,10 @@
     };
     dev = {
       general.enable = true;
-      embedded = {
+      embedded.enable = true;
+      stm32cubemx = {
         enable = true;
-        stm32cubemx.uiScale = 2;
+        uiScale = null;
       };
       android.enable = true;
       codexDesktop.enable = true;
