@@ -6,6 +6,10 @@
 }:
 let
   cfg = config.myHome.desktop.common.inputMethod;
+  themes = {
+    OriDark = pkgs.fcitx5-theme-ori;
+    macOS-dark = pkgs.fcitx5-themes-candlelight;
+  };
   rimeIceDefaults = pkgs.writeTextDir "share/rime-data/default.custom.yaml" ''
     patch:
       schema_list:
@@ -17,7 +21,14 @@ let
   '';
 in
 {
-  options.myHome.desktop.common.inputMethod.enable = lib.mkEnableOption "Fcitx 5 input method";
+  options.myHome.desktop.common.inputMethod = {
+    enable = lib.mkEnableOption "Fcitx 5 input method";
+    theme = lib.mkOption {
+      type = lib.types.enum (builtins.attrNames themes);
+      default = "OriDark";
+      description = "Fcitx 5 classic UI theme";
+    };
+  };
   config = lib.mkIf cfg.enable {
     i18n.inputMethod = {
       enable = true;
@@ -32,7 +43,7 @@ in
               rimeIceSimplified
             ];
           })
-          pkgs.fcitx5-theme-ori
+          themes.${cfg.theme}
         ];
         waylandFrontend = true;
         settings = {
@@ -50,7 +61,7 @@ in
           addons.classicui.globalSection = {
             "Vertical Candidate List" = "False";
             PerScreenDPI = "True";
-            Theme = "OriDark";
+            Theme = cfg.theme;
           };
         };
       };
