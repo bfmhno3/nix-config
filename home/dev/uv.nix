@@ -12,6 +12,6 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = [ pkgs.uv ];
     home.shellAliases.upip = "uv pip";
-    home.sessionVariables.PATH = "${config.xdg.binHome}:$PATH";
+    home.sessionPath = [ config.xdg.binHome ];
   };
 }
