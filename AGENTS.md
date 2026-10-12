@@ -12,6 +12,7 @@ Keep these layers distinct:
 - `home/default.nix` is the Home Manager option registry. It explicitly imports every reusable Home module exactly once. `home/core/`, `home/desktop/`, `home/apps/`, and `home/dev/` declare independently selectable `myHome.*` options.
 - Physical machines live at `hosts/<hostname>/`. Nonphysical reference configurations live at `hosts/examples/<hostname>/`. A host may import only its generated `hardware-configuration.nix`; otherwise it composes the centrally loaded registries by assigning `mySystem.*` and `myHome.*` values.
 - `pkgs/` contains repository package recipes for software absent from nixpkgs or without a usable upstream flake.
+- `patches/` holds every patch file: those `pkgs/` recipes apply and those prepared for upstream submission. Recipes reference them as `../patches/<name>.patch`.
 - `overlays/` integrates repository packages into nixpkgs and applies repository-owned nixpkgs package modifications. The public default overlay is `overlays.default`.
 - `templates/` owns standalone project development flakes. Compilers, build systems, and language toolchains belong in these shells rather than the global user environment, and templates must not depend on root package or overlay entrypoints.
 

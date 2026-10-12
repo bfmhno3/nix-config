@@ -38,6 +38,7 @@ home/desktop/             desktop environment and display integration
 home/apps/                desktop applications
 home/dev/                 user development tools
 pkgs/                     repository-owned package recipes
+patches/                  patch files applied by packages or prepared upstream
 overlays/                 nixpkgs package integration and modifications
 templates/                standalone project development flakes
 ```
