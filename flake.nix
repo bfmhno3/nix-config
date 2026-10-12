@@ -4,7 +4,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    helix.url = "github:helix-editor/helix/master";
+    helix = {
+      url = "github:helix-editor/helix/master";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     oh-my-tmux = {
       url = "github:gpakosz/.tmux";
       flake = false;
@@ -17,13 +20,19 @@
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    dae.url = "github:daeuniverse/flake.nix";
+    dae = {
+      url = "github:daeuniverse/flake.nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     omp.url = "github:can1357/oh-my-pi?ref=v18.10.2";
     nyxuri = {
       url = "github:ech678/Nyxuri/v3.1.0";
       flake = false;
     };
-    codex-desktop-linux.url = "github:ilysenko/codex-desktop-linux";
+    codex-desktop-linux = {
+      url = "github:ilysenko/codex-desktop-linux";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     claude-desktop = {
       url = "github:nmcbride/claude-desktop-nix";
       inputs.nixpkgs.follows = "nixpkgs";
