@@ -13,7 +13,6 @@ in
     home.packages = with pkgs; [
       google-chrome
       kdePackages.kate
-      localsend
       easytier
       texlive.combined.scheme-full
       google-drive-ocamlfuse

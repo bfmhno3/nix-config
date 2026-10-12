@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
 let
   cfg = config.mySystem.network.localsend;
 in
@@ -11,10 +6,6 @@ in
   options.mySystem.network.localsend.enable = lib.mkEnableOption "LocalSend";
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = [ pkgs.localsend ];
-    networking.firewall = {
-      allowedTCPPorts = [ 53317 ];
-      allowedUDPPorts = [ 53317 ];
-    };
+    programs.localsend.enable = true;
   };
 }

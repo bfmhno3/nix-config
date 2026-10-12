@@ -31,7 +31,6 @@
       fonts.enable = true;
       niri.enable = true;
       greetd.enable = true;
-      plasma.enable = false;
       gaming.enable = true;
     };
     hardware = {
