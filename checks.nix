@@ -49,12 +49,15 @@ self.packages.${pkgs.stdenv.hostPlatform.system}
       test -x ${qqPackage}/bin/qq
       test -x ${wechatPackage}/bin/wechat
 
-      # WeChat runs through XWayland, where the X server advertises
-      # Xft.dpi = 96 * output scale and Qt's xcb plugin derives its base
-      # scale factor from it. Setting a scale must therefore override that
-      # factor (QT_SCREEN_SCALE_FACTORS) and never multiply it
-      # (QT_SCALE_FACTOR renders the UI at 2x the intended size).
-      ${pkgs.gnugrep}/bin/grep -Fx "export QT_SCREEN_SCALE_FACTORS='2'" ${wechatPackage}/bin/wechat
+      # WeChat 4.1.13 mis-sizes its Wayland window when QT_SCREEN_SCALE_FACTORS
+      # is set, so a Wayland session must leave the variable unset and use the
+      # compositor scale. On X11 the launcher pins xcb and overrides the
+      # DPI-derived scale; QT_SCALE_FACTOR would multiply it and render the UI
+      # at 2x the intended size.
+      ${pkgs.gnugrep}/bin/grep -F "WAYLAND_DISPLAY" ${wechatPackage}/bin/wechat
+      ${pkgs.gnugrep}/bin/grep -F "unset QT_SCREEN_SCALE_FACTORS" ${wechatPackage}/bin/wechat
+      ${pkgs.gnugrep}/bin/grep -F "export QT_QPA_PLATFORM=xcb" ${wechatPackage}/bin/wechat
+      ${pkgs.gnugrep}/bin/grep -F "export QT_SCREEN_SCALE_FACTORS=2" ${wechatPackage}/bin/wechat
       if ${pkgs.gnugrep}/bin/grep -q "QT_SCALE_FACTOR" ${wechatPackage}/bin/wechat; then
         echo "wechat wrapper must not set QT_SCALE_FACTOR: it multiplies the DPI-derived scale"
         exit 1
