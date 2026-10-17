@@ -12,16 +12,19 @@ in
   config = lib.mkIf cfg.enable {
     services.tlp = {
       enable = true;
-      # Noctalia's power profile switch talks to org.freedesktop.UPower.PowerProfiles.
+      # TLP and power-profiles-daemon both control platform_profile and CPU
+      # EPP, so they cannot run together. tlp-pd exposes the ppd D-Bus API on
+      # top of TLP, which Noctalia uses for its power profile switch.
       pd.enable = true;
+      # Do not set START_CHARGE_THRESH_BAT0/STOP_CHARGE_THRESH_BAT0 here:
+      # UPower must own the thresholds, otherwise Noctalia sees them as
+      # externally managed and disables its charge limit toggle.
     };
     services.power-profiles-daemon.enable = false;
     services.upower.enable = true;
 
-    # TLP must not write charge thresholds, otherwise UPower marks them as
-    # externally managed and Noctalia disables its charge limit toggle.
-    # Enable UPower once; it persists the choice and re-applies the EC
-    # thresholds on later boots.
+    # Enable UPower's threshold management once; it persists the choice and
+    # re-applies the EC thresholds on later boots.
     systemd.services.upower-adopt-charge-thresholds = {
       description = "Adopt battery charge thresholds into UPower";
       after = [ "upower.service" ];
