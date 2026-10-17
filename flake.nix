@@ -6,7 +6,10 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     helix = {
       url = "github:helix-editor/helix/master";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      # Following nixpkgs-unstable fails: glibc 2.44 defines bsearch as a C23
+      # generic macro, which collides with the tree-sitter-perl grammar's own
+      # bsearch() definition.
+      # inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     oh-my-tmux = {
       url = "github:gpakosz/.tmux";
@@ -24,7 +27,10 @@
       url = "github:daeuniverse/flake.nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    omp.url = "github:can1357/oh-my-pi?ref=v18.10.2";
+    omp = {
+      url = "github:can1357/oh-my-pi?ref=v18.11.3";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     nyxuri = {
       url = "github:ech678/Nyxuri/v3.1.0";
       flake = false;
