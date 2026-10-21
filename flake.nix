@@ -31,6 +31,10 @@
       url = "github:can1357/oh-my-pi?ref=v18.12.5";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nyxuri = {
       url = "github:ech678/Nyxuri/v3.1.0";
       flake = false;
@@ -93,6 +97,7 @@
               };
             }
             inputs.dae.nixosModules.dae
+            inputs.sops-nix.nixosModules.sops
             ./modules
             hostPath
             home-manager.nixosModules.home-manager

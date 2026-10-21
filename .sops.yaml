@@ -1,0 +1,9 @@
+keys:
+  - &thinkpad age1rudutz5wh27dj8p7n22nundefrsuqy45dvhh836vwtadhd70f34qcsrwzc
+  - &bfmhno3 age1yvsl45cn60hrlpsmdfv23amt9ymtadxkrkuptt5vvva48kvrgvwsc8qe58
+creation_rules:
+  - path_regex: secrets/[^/]+\.yaml$
+    key_groups:
+      - age:
+          - *thinkpad
+          - *bfmhno3

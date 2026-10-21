@@ -34,7 +34,7 @@
       localsend.enable = true;
       dae = {
         enable = true;
-        autoStart = false;
+        autoStart = true;
       };
     };
     dev = {
