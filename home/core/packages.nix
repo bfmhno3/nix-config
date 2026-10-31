@@ -9,13 +9,28 @@ let
   cfg = config.myHome.core.packages;
   # Upstream's package tests the whole workspace. Its reqwest clients require
   # system CA roots, which do not exist in the Nix build sandbox, so every test
-  # that constructs a client fails before making a request. Only the CLI is
-  # installed.
+  # that constructs a client fails before making a request. Select the release
+  # CLI crates explicitly; the remaining members are libraries, benchmarks, and
+  # fuzz harnesses.
   mq = inputs.mq.packages.${pkgs.stdenv.hostPlatform.system}.mq.overrideAttrs {
     doCheck = false;
     cargoBuildFlags = [
       "--package"
       "mq-run"
+      "--package"
+      "mq-check"
+      "--package"
+      "mq-crawler"
+      "--package"
+      "mq-formatter"
+      "--package"
+      "mq-lint"
+      "--package"
+      "mq-lsp"
+      "--package"
+      "mq-test"
+      "--features"
+      "mq-run/debugger,mq-check/cli,mq-lint/cli"
     ];
   };
 in
