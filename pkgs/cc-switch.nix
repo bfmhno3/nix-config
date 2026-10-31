@@ -21,13 +21,13 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "cc-switch";
-  version = "4.0.14";
+  version = "4.0.22";
 
   # Upstream ships no nixpkgs package and no Linux tarball, so the Debian build
   # is the input and the Nix-native WebKitGTK stack is linked in at install time.
   src = fetchurl {
     url = "https://github.com/farion1231/cc-switch/releases/download/v${finalAttrs.version}/CC-Switch-v${finalAttrs.version}-Linux-x86_64.deb";
-    hash = "sha256-QsblSsTyzsFi6CVxECJ4g8K5lALfIlFGxBKVDv/lf34=";
+    hash = "sha256-bmpD4PSL+hEghn5LopWapFtVMzLZ/sQhOh9eXbrcs8U=";
   };
 
   nativeBuildInputs = [
