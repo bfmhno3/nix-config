@@ -11,7 +11,7 @@ in
   options.myHome.apps.productivity.enable = lib.mkEnableOption "productivity applications";
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      google-chrome
+      unstable.google-chrome
       kdePackages.kate
       easytier
       texlive.combined.scheme-full
