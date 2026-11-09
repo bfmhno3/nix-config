@@ -28,7 +28,7 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     omp = {
-      url = "github:can1357/oh-my-pi?ref=v18.14.1";
+      url = "github:can1357/oh-my-pi?ref=v18.18.3";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     mq = {
