@@ -33,6 +33,7 @@
       };
       viewer.enable = true;
       productivity.enable = true;
+      onlyoffice.enable = true;
       ccSwitch.enable = true;
       codexDesktop.enable = true;
     };
