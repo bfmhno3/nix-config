@@ -7,6 +7,7 @@
     ./apps/qq.nix
     ./apps/wechat.nix
     ./apps/viewer.nix
+    ./apps/remote-desktop.nix
     ./apps/productivity.nix
     ./apps/onlyoffice.nix
     ./apps/cc-switch.nix

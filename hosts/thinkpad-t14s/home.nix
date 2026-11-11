@@ -32,6 +32,7 @@
         scale = 2;
       };
       viewer.enable = true;
+      remoteDesktop.enable = true;
       productivity.enable = true;
       onlyoffice.enable = true;
       ccSwitch.enable = true;
