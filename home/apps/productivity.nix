@@ -19,8 +19,8 @@ in
       zotero
       obsidian
       typora
-      drawio
-      freecad
+      unstable.drawio
+      unstable.freecad
       imhex
       inkscape
       rpi-imager
