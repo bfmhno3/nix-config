@@ -12,7 +12,7 @@ let
   # that constructs a client fails before making a request. Select the release
   # CLI crates explicitly; the remaining members are libraries, benchmarks, and
   # fuzz harnesses.
-  mq = inputs.mq.packages.${pkgs.stdenv.hostPlatform.system}.mq.overrideAttrs {
+  mq = inputs.mq.packages.${pkgs.stdenv.hostPlatform.system}.mq.overrideAttrs (old: {
     doCheck = false;
     cargoBuildFlags = [
       "--package"
@@ -32,7 +32,11 @@ let
       "--features"
       "mq-run/debugger,mq-check/cli,mq-lint/cli"
     ];
-  };
+    # nixpkgs' aws-lc-sys crate override does not reach cargoLock-based builds,
+    # while the Rust setup hook still sets AWS_LC_SYS_USE_SYSTEM=1.
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.unstable.pkg-config ];
+    buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.unstable.aws-lc ];
+  });
 in
 {
   options.myHome.core.packages.enable = lib.mkEnableOption "core user packages";
