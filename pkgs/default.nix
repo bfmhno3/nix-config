@@ -1,6 +1,7 @@
 { pkgs }:
 {
   cc-switch = pkgs.callPackage ./cc-switch.nix { };
+  cnki-cli = pkgs.callPackage ./cnki-cli.nix { };
   fcitx5-themes-candlelight = pkgs.callPackage ./fcitx5-themes-candlelight.nix { };
   fcitx5-theme-ori = pkgs.callPackage ./fcitx5-theme-ori.nix { };
   google-sans-flex = pkgs.callPackage ./google-sans-flex.nix { };

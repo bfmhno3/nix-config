@@ -56,6 +56,7 @@ in
       jq
       yq-go
       mq
+      cnki-cli
       delta
       yazi
       xh
